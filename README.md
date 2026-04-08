@@ -197,7 +197,7 @@ O armazenamento com Volume de 20 GB é suficiente para o sistema operacional (Li
 Para cumprir o requisito de que a aplicação deve estar acessível publicamente, foi provisionado um endereço IPv4 público. De acordo com a atualização de tarifação da AWS (2024), todos os IPs públicos (mesmo em uso) possuem um custo fixo. O valor é de $0,005 por hora. Considerando um mês comercial médio de 730 horas ($0,005 * 730), chegamos ao valor aproximado de $3,65. Para fins de estimativa conservadora na calculadora, arredondamos este custo operacional para $4,00 mensais.
 
 5. **Amazon RDS para PostgreSQL (Camada de Dados):**
-Diferente de rodar o banco dentro da EC2, o uso do RDS gerenciado eleva a maturidade da arquitetura. A instância db.t3.micro é condizente com o tamanho da aplicação. Como o ToggleMaster armazena apenas metadados de flags, uma instância micro suporta a carga com folga. Para um MVP de Fase 1, a alta disponibilidade (Multi-AZ) foi descartada para reduzir o custo pela metade, mantendo o foco na funcionalidade e persistência básica. OArmazenamento 20 GB (gp3) foi escolhido seguindo o padrão de performance e economia adotado na EC2, garantindo consistência na arquitetura de storage.
+Diferente de rodar o banco dentro da EC2, o uso do RDS gerenciado eleva a maturidade da arquitetura. A instância db.t3.micro é condizente com o tamanho da aplicação. Como o ToggleMaster armazena apenas metadados de flags, uma instância micro suporta a carga com folga. Para um MVP de Fase 1, a alta disponibilidade (Multi-AZ) foi descartada para reduzir o custo pela metade, mantendo o foco na funcionalidade e persistência básica. O Armazenamento 20 GB (gp3) foi escolhido seguindo o padrão de performance e economia adotado na EC2, garantindo consistência na arquitetura de storage.
 
 ---
 
@@ -231,7 +231,7 @@ A transição de um ambiente local (Docker) para o primeiro contato prático com
 
 * 🎥 **Vídeo de Demonstração e Defesa Técnica:** [MVP ToggleMaster: Nuvem AWS, EC2 e RDS Privado (Tech Challenge)](https://youtu.be/lp2dKtyjIMs).
 * 📄 **Documentação da Arquitetura:** Disponível no diagrama em [Arquitetura AWS (As-Built)](#arquitetura-aws-as-built).
-* 🖥️ **Discussão sobre os 12-Factor App aplicada ao projeto:** Disponível em [FinOps: Estimativa de Custos](#discussão-metodologia-12-factor-app-aplicada-ao-togglemaster).
+* 🖥️ **Discussão sobre os 12-Factor App aplicada ao projeto:** Disponível em [Discussão sobre os 12-Factor App aplicada ao projeto](#discussão-metodologia-12-factor-app-aplicada-ao-togglemaster).
 * 💰 **Estimativa de Custos AWS:** Link detalhado em [FinOps: Estimativa de Custos](#-finops-estimativa-de-custos).
 
 ---
