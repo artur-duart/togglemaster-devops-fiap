@@ -1,0 +1,148 @@
+name: togglemaster
+
+services:
+  auth-db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${AUTH_DB_USER}
+      POSTGRES_PASSWORD: ${AUTH_DB_PASSWORD}
+      POSTGRES_DB: ${AUTH_DB_NAME}
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./services/auth-service/db/init.sql:/docker-entrypoint-initdb.d/01-init.sql
+      - ./services/auth-service/db/seed-local.sql:/docker-entrypoint-initdb.d/02-seed-local.sql
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${AUTH_DB_USER} -d ${AUTH_DB_NAME}" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  auth-service:
+    build:
+      context: ./services/auth-service
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      PORT: 8001
+      DATABASE_URL: "postgres://${AUTH_DB_USER}:${AUTH_DB_PASSWORD}@auth-db:5432/${AUTH_DB_NAME}"
+      MASTER_KEY: ${AUTH_MASTER_KEY}
+    depends_on:
+      auth-db:
+        condition: service_healthy
+    ports:
+      - "8001:8001"
+
+  flag-targeting-db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${SHARED_DB_USER}
+      POSTGRES_PASSWORD: ${SHARED_DB_PASSWORD}
+      POSTGRES_DB: ${FLAG_DB_NAME}
+      TARGETING_DB_NAME: ${TARGETING_DB_NAME}
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./services/flag-service/db/init.sql:/docker-entrypoint-initdb.d/01-flag.sql
+      - ./services/init-databases.sh:/docker-entrypoint-initdb.d/02-init-databases.sh
+      - ./services/targeting-service/db/init.sql:/schemas/targeting.sql
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${SHARED_DB_USER} -d ${FLAG_DB_NAME}" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  flag-service:
+    build:
+      context: ./services/flag-service
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      PORT: 8002
+      DATABASE_URL: "postgres://${SHARED_DB_USER}:${SHARED_DB_PASSWORD}@flag-targeting-db:5432/${FLAG_DB_NAME}"
+      AUTH_SERVICE_URL: "http://auth-service:8001"
+    depends_on:
+      flag-targeting-db:
+        condition: service_healthy
+      auth-service:
+        condition: service_healthy
+    ports:
+      - "8002:8002"
+
+  targeting-service:
+    build:
+      context: ./services/targeting-service
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      PORT: 8003
+      DATABASE_URL: "postgres://${SHARED_DB_USER}:${SHARED_DB_PASSWORD}@flag-targeting-db:5432/${TARGETING_DB_NAME}"
+      AUTH_SERVICE_URL: "http://auth-service:8001"
+    depends_on:
+      flag-targeting-db:
+        condition: service_healthy
+      auth-service:
+        condition: service_healthy
+    ports:
+      - "8003:8003"
+
+  redis:
+    image: redis:7.4-alpine
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  evaluation-service:
+    build:
+      context: ./services/evaluation-service
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      PORT: 8004
+      REDIS_URL: "redis://redis:6379"
+      FLAG_SERVICE_URL: "http://flag-service:8002"
+      TARGETING_SERVICE_URL: "http://targeting-service:8003"
+      SERVICE_API_KEY: ${SERVICE_API_KEY}
+    depends_on:
+      flag-service:
+        condition: service_healthy
+      targeting-service:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    ports:
+      - "8004:8004"
+
+  dynamodb-local:
+    image: amazon/dynamodb-local:3.3.0
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    command: "-jar DynamoDBLocal.jar -inMemory -sharedDb"
+
+  analytics-service:
+    build:
+      context: ./services/analytics-service
+    restart: unless-stopped
+    environment:
+      PORT: 8005
+      AWS_REGION: ${AWS_REGION}
+      AWS_SQS_URL: ${ANALYTICS_SQS_URL}
+      AWS_DYNAMODB_TABLE: ${AWS_DYNAMODB_TABLE}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+    ports:
+      - "8005:8005"
+    depends_on:
+      dynamodb-local:
+        condition: service_started

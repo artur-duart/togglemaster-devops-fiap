@@ -1,0 +1,174 @@
+{
+  "info": {
+    "name": "ToggleMaster - Integração Local",
+    "_postman_id": "togglemaster-local-0001",
+    "description": "Testes de integração entre os 5 microsserviços do ToggleMaster (docker-compose local).\n\nFLUXO RECOMENDADO (rode na ordem):\n0. Health Checks — confirma que todos respondem.\n1. Auth > Create API Key — cria a chave e CAPTURA AUTOMATICAMENTE na variável {{apiKey}} (um script de teste faz isso). Os requests seguintes já usam {{apiKey}}.\n2. Flag > Create Flag — cria a flag 'new-dashboard' (habilitada).\n3. Targeting > Create Rule — cria uma regra PERCENTAGE de 50% para a flag.\n4. Evaluation > Evaluate — pede a decisão final.\n\n⚠️ NOTA DE INTEGRAÇÃO: o evaluation-service usa a variável SERVICE_API_KEY do .env (NÃO a do Postman) para chamar flag/targeting. Enquanto o .env tiver o placeholder, o /evaluate vai falhar (502) ou retornar 'false'. Resolver isso é justamente o objetivo do debug de integração.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "authUrl", "value": "http://localhost:8001" },
+    { "key": "flagUrl", "value": "http://localhost:8002" },
+    { "key": "targetingUrl", "value": "http://localhost:8003" },
+    { "key": "evalUrl", "value": "http://localhost:8004" },
+    { "key": "analyticsUrl", "value": "http://localhost:8005" },
+    { "key": "masterKey", "value": "081fc15ebfdbb6ce850e714ab2fd4f0d34167ab0669b1fa5b2b790977a67ec5b" },
+    { "key": "apiKey", "value": "" },
+    { "key": "flagName", "value": "new-dashboard" },
+    { "key": "userId", "value": "user-123" }
+  ],
+  "item": [
+    {
+      "name": "0. Health Checks",
+      "item": [
+        {
+          "name": "auth /health",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{authUrl}}/health", "host": ["{{authUrl}}"], "path": ["health"] } }
+        },
+        {
+          "name": "flag /health",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{flagUrl}}/health", "host": ["{{flagUrl}}"], "path": ["health"] } }
+        },
+        {
+          "name": "targeting /health",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{targetingUrl}}/health", "host": ["{{targetingUrl}}"], "path": ["health"] } }
+        },
+        {
+          "name": "evaluation /health",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{evalUrl}}/health", "host": ["{{evalUrl}}"], "path": ["health"] } }
+        },
+        {
+          "name": "analytics /health",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{analyticsUrl}}/health", "host": ["{{analyticsUrl}}"], "path": ["health"] } }
+        }
+      ]
+    },
+    {
+      "name": "1. Auth",
+      "item": [
+        {
+          "name": "Create API Key (captura {{apiKey}})",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json && json.key) {",
+                  "  pm.collectionVariables.set('apiKey', json.key);",
+                  "  console.log('apiKey capturada e salva na variável da coleção:', json.key);",
+                  "} else {",
+                  "  console.log('Nenhuma chave retornada — verifique a MASTER_KEY.');",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{masterKey}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"chave-de-servico\"\n}" },
+            "url": { "raw": "{{authUrl}}/admin/keys", "host": ["{{authUrl}}"], "path": ["admin", "keys"] },
+            "description": "Cria uma API key. Exige a MASTER_KEY no header. Retorna a chave em texto plano UMA vez — o script de teste a salva em {{apiKey}}."
+          }
+        },
+        {
+          "name": "Validate API Key",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Authorization", "value": "Bearer {{apiKey}}" } ],
+            "url": { "raw": "{{authUrl}}/validate", "host": ["{{authUrl}}"], "path": ["validate"] },
+            "description": "Valida a {{apiKey}}. 200 = válida, 401 = inválida/inativa. É exatamente o que flag/targeting chamam internamente."
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Flag",
+      "item": [
+        {
+          "name": "Create Flag",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{apiKey}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"{{flagName}}\",\n  \"description\": \"Novo dashboard (beta)\",\n  \"is_enabled\": true\n}" },
+            "url": { "raw": "{{flagUrl}}/flags", "host": ["{{flagUrl}}"], "path": ["flags"] },
+            "description": "Cria a flag. Protegido — o flag chama o auth /validate com a {{apiKey}}. 201 = criada, 401 = chave inválida, 409 = já existe."
+          }
+        },
+        {
+          "name": "List Flags",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "Authorization", "value": "Bearer {{apiKey}}" } ],
+            "url": { "raw": "{{flagUrl}}/flags", "host": ["{{flagUrl}}"], "path": ["flags"] }
+          }
+        },
+        {
+          "name": "Get Flag by name",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "Authorization", "value": "Bearer {{apiKey}}" } ],
+            "url": { "raw": "{{flagUrl}}/flags/{{flagName}}", "host": ["{{flagUrl}}"], "path": ["flags", "{{flagName}}"] },
+            "description": "Mesma rota que o evaluation chama internamente (GET /flags/<name>)."
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Targeting",
+      "item": [
+        {
+          "name": "Create Rule (PERCENTAGE 50%)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{apiKey}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"flag_name\": \"{{flagName}}\",\n  \"is_enabled\": true,\n  \"rules\": {\n    \"type\": \"PERCENTAGE\",\n    \"value\": 50\n  }\n}" },
+            "url": { "raw": "{{targetingUrl}}/rules", "host": ["{{targetingUrl}}"], "path": ["rules"] },
+            "description": "Cria a regra de segmentação. O objeto 'rules' deve ter 'type' e 'value' (é o formato que o evaluator espera). PERCENTAGE 50 = ~metade dos usuários recebem true."
+          }
+        },
+        {
+          "name": "Get Rule by flag_name",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "Authorization", "value": "Bearer {{apiKey}}" } ],
+            "url": { "raw": "{{targetingUrl}}/rules/{{flagName}}", "host": ["{{targetingUrl}}"], "path": ["rules", "{{flagName}}"] },
+            "description": "Mesma rota que o evaluation chama internamente (GET /rules/<flag_name>)."
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Evaluation (hot path)",
+      "item": [
+        {
+          "name": "Evaluate",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{evalUrl}}/evaluate?user_id={{userId}}&flag_name={{flagName}}",
+              "host": ["{{evalUrl}}"],
+              "path": ["evaluate"],
+              "query": [
+                { "key": "user_id", "value": "{{userId}}" },
+                { "key": "flag_name", "value": "{{flagName}}" }
+              ]
+            },
+            "description": "A decisão final (true/false). O evaluation junta flag + targeting (via SERVICE_API_KEY do .env) + cache Redis.\n\n⚠️ Se o SERVICE_API_KEY do .env ainda for o placeholder, espere 502 (Bad Gateway) ou 'false' — porque o evaluation toma 401 do flag/targeting. Trocar a SERVICE_API_KEY por uma chave real (a que a request 'Create API Key' gerou) resolve."
+          }
+        }
+      ]
+    }
+  ]
+}
