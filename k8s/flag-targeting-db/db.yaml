@@ -1,0 +1,86 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flag-targeting-db
+  namespace: togglemaster
+  labels:
+    app: flag-targeting-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flag-targeting-db
+  template:
+    metadata:
+      labels:
+        app: flag-targeting-db
+    spec:
+      containers:
+        - name: flag-targeting-db
+          image: postgres:16-alpine
+          ports:
+            - containerPort: 5432
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "250m"
+              memory: "256Mi"
+          readinessProbe:
+            exec:
+              command:
+                - pg_isready
+                - -U
+                - shared_user
+                - -d
+                - flag_db
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: flag-targeting-config
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: flag-targeting-secret
+                  key: POSTGRES_PASSWORD
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: flag-targeting-config
+                  key: POSTGRES_DB
+            - name: TARGETING_DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: flag-targeting-config
+                  key: TARGETING_DB_NAME
+          volumeMounts:
+            - name: init-script
+              mountPath: /docker-entrypoint-initdb.d
+            - name: schemas
+              mountPath: /schemas
+      volumes:
+        - name: init-script
+          configMap:
+            name: flag-targeting-db-init
+        - name: schemas
+          configMap:
+            name: flag-targeting-db-schemas
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: flag-targeting-db
+  namespace: togglemaster
+spec:
+  selector:
+    app: flag-targeting-db
+  ports:
+    - port: 5432
+      targetPort: 5432
+  type: ClusterIP
