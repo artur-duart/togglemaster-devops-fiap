@@ -1,18 +1,15 @@
 .env
 .env.*
 !.env.example
-
 __pycache__/
 *.pyc
 *.pyo
-
 .vscode/
 .idea/
-
-# Arquivos de uso próprio (não fazem parte do entregável público)
 ANALISE.md
 NOTAS-VIDEO.md
 ENTREGA.md
 GUIA-PROJETO.html
 GUIA-PROJETO.pdf
 docs/
+k8s/**/secret.yaml
