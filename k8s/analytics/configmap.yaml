@@ -7,4 +7,4 @@ data:
   PORT: "8005"
   AWS_REGION: "us-east-1"
   AWS_DYNAMODB_TABLE: "ToggleMasterAnalytics"
-  AWS_SQS_URL: "http://sqs-nao-existe-local:0/fila"
+  AWS_SQS_URL: "https://sqs.us-east-1.amazonaws.com/376903139600/togglemaster-analytics-events"
