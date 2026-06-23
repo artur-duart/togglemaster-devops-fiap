@@ -9,6 +9,10 @@ metadata:
 iam:
   withOIDC: true
 
+vpc:
+  nat:
+    gateway: Disable
+
 managedNodeGroups:
   - name: ng-togglemaster
     instanceType: t3.medium
