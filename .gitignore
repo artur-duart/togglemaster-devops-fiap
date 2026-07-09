@@ -1,15 +1,49 @@
+# --- Segredos e credenciais  ---
 .env
 .env.*
 !.env.example
-__pycache__/
-*.pyc
-*.pyo
-.vscode/
-.idea/
+k8s/**/secret.yaml
+scripts/
+togglemaster.postman_collection.json
+
+# --- Vídeo (projeto Remotion) ---
+video/
+
+# --- Notas de trabalho e material interno  ---
 ANALISE.md
 NOTAS*.md
 ENTREGA.md
 GUIA-PROJETO.html
 GUIA-PROJETO.pdf
 docs/
-k8s/**/secret.yaml
+entregaveis/
+
+# --- Dependências ---
+node_modules/
+
+# --- Python ---
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+
+# --- Go / binários compilados ---
+*.exe
+*.test
+
+# --- Logs e temporários ---
+*.log
+*.tmp
+
+# --- Editores / IDE ---
+.vscode/
+.idea/
+*.swp
+
+# --- Sistema operacional ---
+.DS_Store
+Thumbs.db
+desktop.ini
