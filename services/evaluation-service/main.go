@@ -14,10 +14,8 @@ import (
 	"github.com/joho/godotenv"
 )
 
-// Contexto global para o Redis
 var ctx = context.Background()
 
-// App struct para injeção de dependência
 type App struct {
 	RedisClient         *redis.Client
 	SqsSvc              *sqs.SQS
@@ -28,9 +26,8 @@ type App struct {
 }
 
 func main() {
-	_ = godotenv.Load() // Carrega .env para dev local
+	_ = godotenv.Load()
 
-	// --- Configuração ---
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8004"
@@ -51,7 +48,6 @@ func main() {
 		log.Fatal("TARGETING_SERVICE_URL deve ser definida")
 	}
 
-	// SQS é opcional no dev local, mas obrigatório em prod
 	sqsQueueURL := os.Getenv("AWS_SQS_URL")
 	awsRegion := os.Getenv("AWS_REGION")
 	if sqsQueueURL == "" {
@@ -61,9 +57,6 @@ func main() {
 		log.Fatal("AWS_REGION deve ser definida para usar SQS")
 	}
 
-	// --- Inicializa Clientes ---
-	
-	// Cliente Redis
 	opt, err := redis.ParseURL(redisURL)
 	if err != nil {
 		log.Fatalf("Não foi possível parsear a URL do Redis: %v", err)
@@ -74,7 +67,6 @@ func main() {
 	}
 	log.Println("Conectado ao Redis com sucesso!")
 
-	// Cliente SQS (AWS SDK)
 	var sqsSvc *sqs.SQS
 	if sqsQueueURL != "" {
 		sess, err := session.NewSession(&aws.Config{Region: aws.String(awsRegion)})
@@ -85,12 +77,10 @@ func main() {
 		log.Println("Cliente SQS inicializado com sucesso.")
 	}
 
-	// Cliente HTTP (com timeout)
 	httpClient := &http.Client{
 		Timeout: 5 * time.Second,
 	}
 
-	// Cria a instância da App
 	app := &App{
 		RedisClient:         rdb,
 		SqsSvc:              sqsSvc,
@@ -100,7 +90,6 @@ func main() {
 		TargetingServiceURL: targetingSvcURL,
 	}
 
-	// --- Rotas ---
 	mux := http.NewServeMux()
 	mux.HandleFunc("/health", app.healthHandler)
 	mux.HandleFunc("/evaluate", app.evaluationHandler)
