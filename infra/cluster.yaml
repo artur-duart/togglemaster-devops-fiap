@@ -8,6 +8,34 @@ metadata:
 
 iam:
   withOIDC: true
+  serviceAccounts:
+    - metadata:
+        name: evaluation-sa
+        namespace: togglemaster
+      attachPolicy:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action: ["sqs:SendMessage", "sqs:GetQueueUrl"]
+            Resource: "arn:aws:sqs:us-east-1:376903139600:togglemaster-analytics-events"
+    - metadata:
+        name: analytics-sa
+        namespace: togglemaster
+      attachPolicy:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action:
+              [
+                "sqs:ReceiveMessage",
+                "sqs:DeleteMessage",
+                "sqs:GetQueueAttributes",
+                "sqs:GetQueueUrl",
+              ]
+            Resource: "arn:aws:sqs:us-east-1:376903139600:togglemaster-analytics-events"
+          - Effect: Allow
+            Action: ["dynamodb:PutItem"]
+            Resource: "arn:aws:dynamodb:us-east-1:376903139600:table/ToggleMasterAnalytics"
 
 vpc:
   nat:
