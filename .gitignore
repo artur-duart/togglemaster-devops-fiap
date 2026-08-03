@@ -1,22 +1,24 @@
-# --- Segredos e credenciais  ---
+# --- Segredos e credenciais ---
 .env
 .env.*
 !.env.example
 k8s/**/secret.yaml
-scripts/
 togglemaster.postman_collection.json
 
-# --- Vídeo (projeto Remotion) ---
-video/
+# --- Terraform ---
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
 
-# --- Notas de trabalho e material interno  ---
-ANALISE.md
-NOTAS*.md
-ENTREGA.md
-GUIA-PROJETO.html
-GUIA-PROJETO.pdf
+# --- Notas de trabalho (local) ---
+CRONOGRAMA.md
+CRONOGRAMA.pdf
+DESTAQUES-RELATORIO.md
+
+# --- Material de aula FIAP (não versionar) ---
 docs/
-entregaveis/
+handson/
 
 # --- Dependências ---
 node_modules/
