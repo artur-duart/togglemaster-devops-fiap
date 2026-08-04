@@ -7,6 +7,10 @@ resource "aws_dynamodb_table" "analytics" {
     name = "event_id"
     type = "S"
   }
+
+  point_in_time_recovery {
+    enabled = true
+  }
 }
 
 resource "aws_sqs_queue" "analytics_dlq" {

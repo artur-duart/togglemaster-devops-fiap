@@ -11,6 +11,7 @@ resource "aws_security_group" "this" {
 
 resource "aws_vpc_security_group_ingress_rule" "this" {
   security_group_id            = aws_security_group.this.id
+  description                  = "PostgreSQL a partir dos nos do EKS"
   from_port                    = 5432
   to_port                      = 5432
   ip_protocol                  = "tcp"
@@ -53,9 +54,10 @@ resource "aws_db_instance" "this" {
   publicly_accessible    = false
   multi_az               = false
 
-  storage_encrypted           = true
-  kms_key_id                  = aws_kms_key.rds.arn
-  manage_master_user_password = true
+  storage_encrypted                   = true
+  kms_key_id                          = aws_kms_key.rds.arn
+  manage_master_user_password         = true
+  iam_database_authentication_enabled = true
 
   skip_final_snapshot = true
 }
