@@ -2,16 +2,16 @@ package main
 
 import (
 	"database/sql"
+	_ "github.com/jackc/pgx/v4/stdlib"
+	"github.com/joho/godotenv"
 	"log"
 	"net/http"
 	"os"
-	_"github.com/jackc/pgx/v4/stdlib"
-	"github.com/joho/godotenv"
 )
 
 type App struct {
-	DB         *sql.DB
-	MasterKey  string
+	DB        *sql.DB
+	MasterKey string
 }
 
 func main() {
@@ -39,8 +39,8 @@ func main() {
 	defer db.Close()
 
 	app := &App{
-		DB:         db,
-		MasterKey:  masterKey,
+		DB:        db,
+		MasterKey: masterKey,
 	}
 
 	mux := http.NewServeMux()
