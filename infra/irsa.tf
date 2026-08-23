@@ -35,7 +35,6 @@ resource "kubernetes_namespace" "togglemaster" {
   }
 }
 
-# ---------- evaluation ----------
 data "aws_iam_policy_document" "evaluation_assume" {
   statement {
     effect  = "Allow"
@@ -80,7 +79,6 @@ resource "kubernetes_service_account" "evaluation" {
   }
 }
 
-# ---------- analytics ----------
 data "aws_iam_policy_document" "analytics_assume" {
   statement {
     effect  = "Allow"
@@ -94,7 +92,7 @@ data "aws_iam_policy_document" "analytics_assume" {
     condition {
       test     = "StringEquals"
       variable = "${module.eks.oidc_provider}:sub"
-      values   = ["system:serviceaccount:togglemaster:analytics-sa"] # 🆕
+      values   = ["system:serviceaccount:togglemaster:analytics-sa"]
     }
 
     condition {

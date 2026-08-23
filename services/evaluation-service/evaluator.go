@@ -93,7 +93,7 @@ func (a *App) fetchFlag(flagName string) (*Flag, error) {
 	req, _ := http.NewRequest("GET", url, nil)
 	req.Header.Set("Authorization", "Bearer "+apiKey)
 
-	resp, err := a.HttpClient.Do(req) // #nosec G704 -- host vem de config confiavel; flagName so compoe o path da URL, nao o destino
+	resp, err := a.HttpClient.Do(req) // #nosec G704
 	if err != nil {
 		return nil, fmt.Errorf("erro ao chamar flag-service: %w", err)
 	}
@@ -120,7 +120,7 @@ func (a *App) fetchRule(flagName string) (*TargetingRule, error) {
 	req, _ := http.NewRequest("GET", url, nil)
 	req.Header.Set("Authorization", "Bearer "+apiKey)
 
-	resp, err := a.HttpClient.Do(req) // #nosec G704 -- host vem de config confiavel; flagName so compoe o path da URL, nao o destino
+	resp, err := a.HttpClient.Do(req) // #nosec G704
 	if err != nil {
 		return nil, fmt.Errorf("erro ao chamar targeting-service: %w", err)
 	}
