@@ -21,9 +21,9 @@ data "aws_iam_policy_document" "github_actions_assume" {
     }
 
     condition {
-      test     = "StringLike"
+      test     = "StringEquals"
       variable = "token.actions.githubusercontent.com:sub"
-      values   = ["repo:artur-duart/togglemaster-devops-fiap:*"] # 🆕 confirme o dono/nome do repo
+      values   = ["repo:artur-duart/togglemaster-devops-fiap:ref:refs/heads/main"]
     }
   }
 }
