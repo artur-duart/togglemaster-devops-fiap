@@ -100,3 +100,23 @@ jobs:
         run: |
           docker build -t $REGISTRY/evaluation-service:$IMAGE_TAG .
           docker push $REGISTRY/evaluation-service:$IMAGE_TAG
+
+  sbom:
+    runs-on: ubuntu-latest
+    needs: security
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Generate SBOM (CycloneDX)
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          scan-type: fs
+          scan-ref: services/evaluation-service
+          format: cyclonedx
+          output: sbom-evaluation-service.cdx.json
+
+      - name: Upload SBOM
+        uses: actions/upload-artifact@v7
+        with:
+          name: sbom-evaluation-service
+          path: sbom-evaluation-service.cdx.json

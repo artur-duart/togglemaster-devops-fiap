@@ -117,3 +117,23 @@ jobs:
         run: |
           docker build -t $REGISTRY/flag-service:$IMAGE_TAG .
           docker push $REGISTRY/flag-service:$IMAGE_TAG
+
+  sbom:
+    runs-on: ubuntu-latest
+    needs: security
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Generate SBOM (CycloneDX)
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          scan-type: fs
+          scan-ref: services/flag-service
+          format: cyclonedx
+          output: sbom-flag-service.cdx.json
+
+      - name: Upload SBOM
+        uses: actions/upload-artifact@v7
+        with:
+          name: sbom-flag-service
+          path: sbom-flag-service.cdx.json

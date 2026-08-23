@@ -107,3 +107,23 @@ jobs:
         run: |
           docker build -t $REGISTRY/analytics-service:$IMAGE_TAG .
           docker push $REGISTRY/analytics-service:$IMAGE_TAG
+
+  sbom:
+    runs-on: ubuntu-latest
+    needs: security
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Generate SBOM (CycloneDX)
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          scan-type: fs
+          scan-ref: services/analytics-service
+          format: cyclonedx
+          output: sbom-analytics-service.cdx.json
+
+      - name: Upload SBOM
+        uses: actions/upload-artifact@v7
+        with:
+          name: sbom-analytics-service
+          path: sbom-analytics-service.cdx.json
