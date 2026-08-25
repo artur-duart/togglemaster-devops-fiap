@@ -1,0 +1,150 @@
+name: reusable-python-ci
+
+on:
+  workflow_call:
+    inputs:
+      service:
+        required: true
+        type: string
+      python-version:
+        required: false
+        type: string
+        default: "3.12"
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: services/${{ inputs.service }}
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: appdb
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ inputs.python-version }}
+          cache: pip
+          cache-dependency-path: services/${{ inputs.service }}/requirements.txt
+
+      - name: Install deps
+        run: |
+          pip install -r requirements.txt
+          pip install pytest
+
+      - name: Unit Test
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/appdb
+          AUTH_SERVICE_URL: http://localhost:9999
+          AWS_REGION: us-east-1
+          AWS_SQS_URL: http://localhost:9999
+          AWS_DYNAMODB_TABLE: dummy
+          AWS_ACCESS_KEY_ID: test
+          AWS_SECRET_ACCESS_KEY: test
+        run: pytest -q
+
+  lint:
+    runs-on: ubuntu-latest
+    needs: build-test
+    defaults:
+      run:
+        working-directory: services/${{ inputs.service }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ inputs.python-version }}
+
+      - name: Install flake8
+        run: pip install flake8
+
+      - name: Lint (erros reais)
+        run: flake8 . --select=E9,F63,F7,F82 --show-source
+
+  security:
+    runs-on: ubuntu-latest
+    needs: lint
+    defaults:
+      run:
+        working-directory: services/${{ inputs.service }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ inputs.python-version }}
+
+      - name: bandit (SAST)
+        run: |
+          pip install bandit
+          bandit -r . --severity-level high
+
+      - name: Trivy (SCA)
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          scan-type: fs
+          scan-ref: services/${{ inputs.service }}
+          severity: CRITICAL
+          exit-code: "1"
+
+  build-push:
+    runs-on: ubuntu-latest
+    needs: security
+    if: github.event_name == 'push'
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: arn:aws:iam::376903139600:role/togglemaster-github-actions
+          aws-region: us-east-1
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build and push
+        working-directory: services/${{ inputs.service }}
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t $REGISTRY/${{ inputs.service }}:$IMAGE_TAG .
+          docker push $REGISTRY/${{ inputs.service }}:$IMAGE_TAG
+
+  sbom:
+    runs-on: ubuntu-latest
+    needs: security
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Generate SBOM (CycloneDX)
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          scan-type: fs
+          scan-ref: services/${{ inputs.service }}
+          format: cyclonedx
+          output: sbom-${{ inputs.service }}.cdx.json
+
+      - name: Upload SBOM
+        uses: actions/upload-artifact@v7
+        with:
+          name: sbom-${{ inputs.service }}
+          path: sbom-${{ inputs.service }}.cdx.json

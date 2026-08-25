@@ -6,124 +6,19 @@ on:
     paths:
       - "services/evaluation-service/**"
       - ".github/workflows/evaluation-service.yml"
+      - ".github/workflows/reusable-go-ci.yml"
   pull_request:
     branches: [main]
     paths:
       - "services/evaluation-service/**"
       - ".github/workflows/evaluation-service.yml"
+      - ".github/workflows/reusable-go-ci.yml"
 
 jobs:
-  build-test:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: services/evaluation-service
-    steps:
-      - uses: actions/checkout@v5
-
-      - uses: actions/setup-go@v6
-        with:
-          go-version: "1.24"
-          cache-dependency-path: services/evaluation-service/go.sum
-
-      - name: Build
-        run: go build ./...
-
-      - name: Unit Test
-        run: go test ./...
-
-  lint:
-    runs-on: ubuntu-latest
-    needs: build-test
-    defaults:
-      run:
-        working-directory: services/evaluation-service
-    steps:
-      - uses: actions/checkout@v5
-
-      - uses: actions/setup-go@v6
-        with:
-          go-version: "1.24"
-          cache-dependency-path: services/evaluation-service/go.sum
-
-      - name: Vet
-        run: go vet ./...
-
-      - name: Check gofmt
-        run: test -z "$(gofmt -l .)"
-
-  security:
-    runs-on: ubuntu-latest
-    needs: lint
-    defaults:
-      run:
-        working-directory: services/evaluation-service
-    steps:
-      - uses: actions/checkout@v5
-
-      - uses: actions/setup-go@v6
-        with:
-          go-version: "1.24"
-          cache-dependency-path: services/evaluation-service/go.sum
-
-      - name: gosec (SAST)
-        run: |
-          go install github.com/securego/gosec/v2/cmd/gosec@v2.23.0
-          gosec -severity high ./...
-
-      - name: Trivy (SCA)
-        uses: aquasecurity/trivy-action@v0.36.0
-        with:
-          scan-type: fs
-          scan-ref: services/evaluation-service
-          severity: CRITICAL
-          exit-code: "1"
-
-  build-push:
-    runs-on: ubuntu-latest
-    needs: security
-    if: github.event_name == 'push'
+  ci:
+    uses: ./.github/workflows/reusable-go-ci.yml
     permissions:
       id-token: write
       contents: read
-    steps:
-      - uses: actions/checkout@v5
-
-      - name: Configure AWS credentials (OIDC)
-        uses: aws-actions/configure-aws-credentials@v6
-        with:
-          role-to-assume: arn:aws:iam::376903139600:role/togglemaster-github-actions
-          aws-region: us-east-1
-
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v2
-
-      - name: Build and push
-        working-directory: services/evaluation-service
-        env:
-          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          IMAGE_TAG: ${{ github.sha }}
-        run: |
-          docker build -t $REGISTRY/evaluation-service:$IMAGE_TAG .
-          docker push $REGISTRY/evaluation-service:$IMAGE_TAG
-
-  sbom:
-    runs-on: ubuntu-latest
-    needs: security
-    steps:
-      - uses: actions/checkout@v5
-
-      - name: Generate SBOM (CycloneDX)
-        uses: aquasecurity/trivy-action@v0.36.0
-        with:
-          scan-type: fs
-          scan-ref: services/evaluation-service
-          format: cyclonedx
-          output: sbom-evaluation-service.cdx.json
-
-      - name: Upload SBOM
-        uses: actions/upload-artifact@v7
-        with:
-          name: sbom-evaluation-service
-          path: sbom-evaluation-service.cdx.json
+    with:
+      service: evaluation-service
