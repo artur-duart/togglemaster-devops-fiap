@@ -19,6 +19,6 @@ jobs:
     uses: ./.github/workflows/reusable-go-ci.yml
     permissions:
       id-token: write
-      contents: read
+      contents: write
     with:
       service: auth-service

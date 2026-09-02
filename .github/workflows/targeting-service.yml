@@ -19,6 +19,6 @@ jobs:
     uses: ./.github/workflows/reusable-python-ci.yml
     permissions:
       id-token: write
-      contents: read
+      contents: write
     with:
       service: targeting-service
