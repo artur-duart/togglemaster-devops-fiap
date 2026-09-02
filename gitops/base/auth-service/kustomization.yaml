@@ -4,10 +4,11 @@ kind: Kustomization
 namespace: togglemaster
 
 resources:
-  - deployment.yaml
-  - service.yaml
-  - configmap.yaml
+- deployment.yaml
+- service.yaml
+- configmap.yaml
 
 images:
-  - name: 376903139600.dkr.ecr.us-east-1.amazonaws.com/auth-service
-    newTag: latest
+- name: 376903139600.dkr.ecr.us-east-1.amazonaws.com/auth-service
+  newName: 376903139600.dkr.ecr.us-east-1.amazonaws.com/auth-service
+  newTag: 103278e020fb8a2b8feae0c2f003fe04c253b4e5
