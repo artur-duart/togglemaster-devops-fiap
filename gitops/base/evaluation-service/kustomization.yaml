@@ -1,0 +1,13 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: togglemaster
+
+resources:
+  - deployment.yaml
+  - service.yaml
+  - configmap.yaml
+
+images:
+  - name: 376903139600.dkr.ecr.us-east-1.amazonaws.com/evaluation-service
+    newTag: latest

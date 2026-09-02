@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: targeting-service
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/artur-duart/togglemaster-devops-fiap
+    targetRevision: main
+    path: gitops/base/targeting-service
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: togglemaster
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=false

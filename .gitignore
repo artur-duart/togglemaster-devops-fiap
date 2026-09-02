@@ -3,6 +3,7 @@
 .env.*
 !.env.example
 k8s/**/secret.yaml
+gitops/**/secret.yaml
 togglemaster.postman_collection.json
 
 # --- Terraform ---
