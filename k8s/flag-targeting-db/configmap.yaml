@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: flag-targeting-config
-  namespace: togglemaster
-data:
-  POSTGRES_USER: shared_user
-  POSTGRES_DB: flag_db
-  TARGETING_DB_NAME: targeting_db

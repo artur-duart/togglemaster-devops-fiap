@@ -2,7 +2,6 @@ apiVersion: keda.sh/v1alpha1
 kind: TriggerAuthentication
 metadata:
   name: keda-aws-sqs-auth
-  namespace: togglemaster
 spec:
   podIdentity:
     provider: aws
@@ -12,7 +11,6 @@ apiVersion: keda.sh/v1alpha1
 kind: ScaledObject
 metadata:
   name: analytics-scaledobject
-  namespace: togglemaster
 spec:
   scaleTargetRef:
     name: analytics-service

@@ -4,11 +4,12 @@ kind: Kustomization
 namespace: togglemaster
 
 resources:
-- deployment.yaml
-- service.yaml
-- configmap.yaml
+  - deployment.yaml
+  - service.yaml
+  - configmap.yaml
+  - scaledobject.yaml
 
 images:
-- name: 376903139600.dkr.ecr.us-east-1.amazonaws.com/analytics-service
-  newName: 376903139600.dkr.ecr.us-east-1.amazonaws.com/analytics-service
-  newTag: 9fd912911be5cb54133d95017b063415b336d645
+  - name: 376903139600.dkr.ecr.us-east-1.amazonaws.com/analytics-service
+    newName: 376903139600.dkr.ecr.us-east-1.amazonaws.com/analytics-service
+    newTag: 9fd912911be5cb54133d95017b063415b336d645
