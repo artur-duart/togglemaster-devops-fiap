@@ -11,4 +11,4 @@ resources:
 images:
 - name: 376903139600.dkr.ecr.us-east-1.amazonaws.com/flag-service
   newName: 376903139600.dkr.ecr.us-east-1.amazonaws.com/flag-service
-  newTag: 9fd912911be5cb54133d95017b063415b336d645
+  newTag: cc57cbfd86a0d34349908312ac56a1a7235028da
