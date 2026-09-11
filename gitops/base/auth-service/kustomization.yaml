@@ -11,4 +11,4 @@ resources:
 images:
 - name: 376903139600.dkr.ecr.us-east-1.amazonaws.com/auth-service
   newName: 376903139600.dkr.ecr.us-east-1.amazonaws.com/auth-service
-  newTag: 103278e020fb8a2b8feae0c2f003fe04c253b4e5
+  newTag: cc57cbfd86a0d34349908312ac56a1a7235028da
