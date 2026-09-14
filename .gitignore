@@ -2,7 +2,6 @@
 .env
 .env.*
 !.env.example
-k8s/**/secret.yaml
 gitops/**/secret.yaml
 togglemaster.postman_collection.json
 
@@ -16,6 +15,8 @@ togglemaster.postman_collection.json
 CRONOGRAMA.md
 CRONOGRAMA.pdf
 DESTAQUES-RELATORIO.md
+ROTEIRO-VIDEO.md
+/video
 
 # --- Material de aula FIAP (não versionar) ---
 docs/

@@ -2,20 +2,18 @@
 
 # 🚀 ToggleMaster — DevOps & Cloud Architecture Journey
 
-**Plataforma de Feature Flags · da arquitetura Monolítica aos Microsserviços Nativos em Nuvem**
+**Plataforma de Feature Flags · Fase 3: Infraestrutura como Código, CI/CD DevSecOps e GitOps**
 
-![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white)
-![Kubernetes](https://img.shields.io/badge/Kubernetes-326CE5?style=flat-square&logo=kubernetes&logoColor=white)
+![Terraform](https://img.shields.io/badge/Terraform-7B42BC?style=flat-square&logo=terraform&logoColor=white)
 ![AWS EKS](https://img.shields.io/badge/AWS_EKS-FF9900?style=flat-square&logo=amazonaws&logoColor=white)
+![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=flat-square&logo=githubactions&logoColor=white)
+![ArgoCD](https://img.shields.io/badge/Argo_CD-EF7B4D?style=flat-square&logo=argo&logoColor=white)
+![Trivy](https://img.shields.io/badge/Trivy-1904DA?style=flat-square&logo=aqua&logoColor=white)
+![Kustomize](https://img.shields.io/badge/Kustomize-326CE5?style=flat-square&logo=kubernetes&logoColor=white)
 ![Go](https://img.shields.io/badge/Go-00ADD8?style=flat-square&logo=go&logoColor=white)
 ![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
-![PostgreSQL](https://img.shields.io/badge/RDS_PostgreSQL-4169E1?style=flat-square&logo=postgresql&logoColor=white)
-![Redis](https://img.shields.io/badge/ElastiCache_Redis-DC382D?style=flat-square&logo=redis&logoColor=white)
-![DynamoDB](https://img.shields.io/badge/DynamoDB-4053D6?style=flat-square&logo=amazondynamodb&logoColor=white)
-![SQS](https://img.shields.io/badge/SQS-FF4F8B?style=flat-square&logo=amazonsqs&logoColor=white)
-![Nginx](https://img.shields.io/badge/Nginx_Ingress-009639?style=flat-square&logo=nginx&logoColor=white)
 ![FIAP](https://img.shields.io/badge/POSTECH-FIAP-ED145B?style=flat-square)
-![Version](https://img.shields.io/badge/version-v2.0.0--fase2-blueviolet?style=flat-square)
+![Version](https://img.shields.io/badge/version-v3.0.0--fase3-blueviolet?style=flat-square)
 
 </div>
 
@@ -23,48 +21,70 @@
 
 ## 📑 Índice
 
-- [🛤 Sobre o Projeto (Visão Evolutiva)](#-sobre-o-projeto-visão-evolutiva)
-- [🎯 O Desafio da Fase 2](#-o-desafio-da-fase-2)
-- [🏗 Arquitetura da Solução](#-arquitetura-da-solução)
-- [🧩 Os 5 Microsserviços](#-os-5-microsserviços)
-- [🗄 Os 3 Data Stores + 1 Fila](#-os-3-data-stores--1-fila)
-- [🐳 Conteinerização (Docker)](#-conteinerização-docker)
-- [☸️ Orquestração (Kubernetes)](#️-orquestração-kubernetes)
-- [☁️ Infraestrutura na Nuvem (AWS)](#️-infraestrutura-na-nuvem-aws)
-- [📈 Escalabilidade](#-escalabilidade)
-- [🔒 Segurança](#-segurança)
-- [✅ Requisitos do Enunciado (Rastreabilidade)](#-requisitos-do-enunciado-rastreabilidade)
-- [🚀 Como Executar](#-como-executar)
-- [🚧 Desafios e Decisões Técnicas](#-desafios-e-decisões-técnicas)
-- [📦 Entregáveis da Fase 2](#-entregáveis-da-fase-2)
-- [🏷 Versionamento](#-versionamento)
-- [👤 Autor](#-autor)
+- [🚀 ToggleMaster — DevOps \& Cloud Architecture Journey](#-togglemaster--devops--cloud-architecture-journey)
+  - [📑 Índice](#-índice)
+  - [🛤 Sobre o Projeto (Visão Evolutiva)](#-sobre-o-projeto-visão-evolutiva)
+  - [🎯 O Desafio da Fase 3](#-o-desafio-da-fase-3)
+  - [🏗 Arquitetura da Solução](#-arquitetura-da-solução)
+    - [Arquitetura da aplicação](#arquitetura-da-aplicação)
+    - [Fluxo DevOps: do commit ao cluster (CI + GitOps)](#fluxo-devops-do-commit-ao-cluster-ci--gitops)
+  - [🧩 Os 5 Microsserviços](#-os-5-microsserviços)
+  - [🟣 Requisito 1 — Infraestrutura como Código (Terraform)](#-requisito-1--infraestrutura-como-código-terraform)
+    - [O que foi provisionado](#o-que-foi-provisionado)
+    - [Decisões de arquitetura que valem destacar](#decisões-de-arquitetura-que-valem-destacar)
+  - [🟢 Requisito 2 — Pipeline de CI e DevSecOps](#-requisito-2--pipeline-de-ci-e-devsecops)
+    - [Os estágios do pipeline](#os-estágios-do-pipeline)
+    - [Autenticação sem chave estática (OIDC)](#autenticação-sem-chave-estática-oidc)
+    - [A regra de bloqueio provada duas vezes](#a-regra-de-bloqueio-provada-duas-vezes)
+  - [🟠 Requisito 3 — Entrega Contínua e GitOps](#-requisito-3--entrega-contínua-e-gitops)
+    - [Estrutura do repositório de GitOps](#estrutura-do-repositório-de-gitops)
+    - [O loop fechado, provado no cluster](#o-loop-fechado-provado-no-cluster)
+    - [Detalhes que mostram domínio](#detalhes-que-mostram-domínio)
+  - [🔒 Segurança e Modelagem de Ameaças](#-segurança-e-modelagem-de-ameaças)
+  - [✅ Rastreabilidade dos Requisitos](#-rastreabilidade-dos-requisitos)
+    - [Requisito 1 — IaC](#requisito-1--iac)
+    - [Requisito 2 — CI \& DevSecOps](#requisito-2--ci--devsecops)
+    - [Requisito 3 — CD \& GitOps](#requisito-3--cd--gitops)
+  - [🚀 Como Reproduzir do Zero](#-como-reproduzir-do-zero)
+    - [1. Provisionar a infraestrutura](#1-provisionar-a-infraestrutura)
+    - [2. Injetar os segredos e a configuração de ambiente](#2-injetar-os-segredos-e-a-configuração-de-ambiente)
+    - [3. Fazer o bootstrap do GitOps](#3-fazer-o-bootstrap-do-gitops)
+    - [4. Derrubar o ambiente (disciplina de custo)](#4-derrubar-o-ambiente-disciplina-de-custo)
+  - [🚧 Desafios e Decisões Técnicas](#-desafios-e-decisões-técnicas)
+  - [💰 Disciplina de Custo (FinOps)](#-disciplina-de-custo-finops)
+  - [📦 Entregáveis da Fase 3](#-entregáveis-da-fase-3)
+  - [🏷 Versionamento](#-versionamento)
+  - [👤 Autor](#-autor)
 
 ---
 
 ## 🛤 Sobre o Projeto (Visão Evolutiva)
 
-Para espelhar cenários reais da indústria, o ToggleMaster evolui em fases, mantidas **no mesmo repositório** e marcadas com **Git Tags/Releases**:
+Para espelhar cenários reais da indústria, o ToggleMaster evolui em fases, mantidas no mesmo repositório e marcadas com Git Tags:
 
-- ✅ **`[CONCLUÍDA]` Fase 1:** MVP **monolítico** (Python/Flask) em EC2 + RDS privado na AWS.
-- 🔵 **`[ATUAL]` Fase 2:** reescrita em **5 microsserviços** conteinerizados, orquestrados em **Kubernetes (AWS EKS)**, com escalabilidade automática.
-- ⚪ **`[EM BREVE]` Fase 3 / Fase 4:** a definir.
+- ✅ **`v1.0.0-fase1`:** MVP monolítico (Python/Flask) em EC2 com RDS privado.
+- ✅ **`v2.0.0-fase2`:** reescrita em 5 microsserviços conteinerizados, orquestrados em Kubernetes (AWS EKS), com escalabilidade automática. A infraestrutura foi provisionada de forma **manual/imperativa** e o deploy usava `kubectl apply` direto.
+- 🔵 **`v3.0.0-fase3` `[ATUAL]`:** a mesma plataforma, agora **100% como código e automação**. Toda a infraestrutura vira Terraform, cada serviço ganha um pipeline de CI com portões de segurança (DevSecOps), e o deploy passa a ser declarativo via GitOps com ArgoCD.
 
-> O histórico completo do monólito da Fase 1 segue preservado neste repositório (consulte a tag `v1.0.0-fase1`).
+> A Fase 3 não muda o que a aplicação faz. Ela transforma **como** a plataforma é construída, verificada e entregue: da criação manual para a Infraestrutura como Código, do deploy imperativo para o GitOps, e da confiança implícita para portões de segurança automatizados.
 
 ---
 
-## 🎯 O Desafio da Fase 2
+## 🎯 O Desafio da Fase 3
 
-> *"O MVP monolítico do ToggleMaster foi um sucesso. A demanda explodiu, o monólito começou a apresentar gargalos, e a diretoria decidiu evoluir: o ToggleMaster será reescrito como um ecossistema de microsserviços distribuídos."*
+O enunciado pede três transformações sobre a plataforma da Fase 2:
 
-A missão: pegar o código-fonte dos **5 microsserviços**, **conteinerizá-los**, **provisionar a infraestrutura de nuvem** e implantá-los em um ambiente de orquestração **robusto, escalável e resiliente**, que é o **Kubernetes na AWS (EKS)**.
+1. **Substituir a criação manual por Terraform**, com um projeto organizado em módulos, provisionando rede, EKS, bancos, mensageria e registries, com o estado remoto no S3.
+2. **Criar pipelines de CI com DevSecOps** para os 5 microsserviços, com build, testes, lint, análise estática (SAST), análise de dependências (SCA) e scan de imagem, bloqueando em vulnerabilidade crítica, e publicando no ECR com a tag do commit.
+3. **Adotar GitOps**, abandonando o push direto: os manifestos vão para um diretório versionado, o ArgoCD é instalado no cluster, o CI atualiza a tag da imagem no Git, e o ArgoCD sincroniza automaticamente.
 
-Este projeto foi desenvolvido na **Opção B (conta pessoal AWS)**, que libera as ferramentas modernas de mercado: **`eksctl`**, **`helm`**, **IRSA** e **KEDA**.
+> **Nota sobre a modalidade.** O projeto foi desenvolvido na **Opção B (conta pessoal AWS)**, que dá acesso completo ao IAM. Por isso, no lugar da `LabRole` da AWS Academy (Opção A), foram provisionadas **roles de IAM reais e de menor privilégio** (OIDC para o CI e IRSA para os pods), como detalhado adiante.
 
 ---
 
 ## 🏗 Arquitetura da Solução
+
+### Arquitetura da aplicação
 
 ```mermaid
 flowchart LR
@@ -80,16 +100,35 @@ flowchart LR
     FLAG --> RDSf[(RDS PostgreSQL<br/>flag)]
     TGT --> RDSt[(RDS PostgreSQL<br/>targeting)]
 
-    EVAL -->|cache hot path| REDIS[(ElastiCache Redis)]
+    EVAL -->|cache| REDIS[(ElastiCache Redis)]
     EVAL -.valida chave.-> AUTH
     EVAL -.consulta flag.-> FLAG
     EVAL -.consulta regra.-> TGT
-    EVAL ==>|produz evento| SQS[[SQS Standard]]
+    EVAL ==>|produz evento| SQS[[SQS + DLQ]]
     SQS ==>|consome| ANL
     ANL --> DDB[(DynamoDB)]
 ```
 
-**Fluxo de uma avaliação (`/evaluate`):** o cliente pergunta *"a flag X está ligada para o usuário Y?"* (com sua chave de API) → o **evaluation** consulta o **Redis** (resposta ultrarrápida); em *cache miss*, pergunta ao **flag** (a flag existe/está ativa?) e ao **targeting** (o usuário se encaixa nas regras?) → calcula o **`true/false`**, devolve a resposta e **publica um evento na fila SQS** → o **analytics** consome a fila e grava no **DynamoDB**, alimentando as estatísticas de produto.
+### Fluxo DevOps: do commit ao cluster (CI + GitOps)
+
+```mermaid
+flowchart LR
+    DEV([Push / Pull Request]) --> GHA[GitHub Actions]
+
+    subgraph CI [Pipeline DevSecOps por serviço]
+      B[Build & Test] --> L[Lint] --> S[SAST + SCA<br/>bloqueia CRÍTICO] --> IMG[Docker Build<br/>+ Scan de imagem]
+    end
+
+    GHA --> CI
+    IMG -->|push tag :commit-sha<br/>via OIDC| ECR[(Amazon ECR)]
+    IMG -->|update-manifest:<br/>escreve a tag no Git| GITOPS[[pasta gitops/]]
+
+    GITOPS -->|pull| ARGO[ArgoCD no EKS]
+    ARGO -->|reconcilia| EKS[(Cluster EKS)]
+    ECR -.imagem puxada.-> EKS
+```
+
+> A esteira nunca faz `kubectl apply`: o CI só publica a imagem e **escreve a nova tag no Git**. O ArgoCD, que vive dentro do cluster, detecta a mudança e reconcilia. Esse modelo *pull-based* mantém a credencial de alto privilégio dentro do cluster e torna o Git a única fonte de verdade.
 
 ---
 
@@ -100,281 +139,243 @@ flowchart LR
 | **auth-service** | Go | 8001 | Emite e valida chaves de API (a "portaria") | RDS PostgreSQL |
 | **flag-service** | Python | 8002 | CRUD das definições de feature flags | RDS PostgreSQL |
 | **targeting-service** | Python | 8003 | Regras de segmentação (para quem a flag vale) | RDS PostgreSQL |
-| **evaluation-service** | Go | 8004 | *Hot path*: decisão final `true/false` + produz evento | ElastiCache Redis + SQS |
+| **evaluation-service** | Go | 8004 | *Hot path*: decisão final `true/false` e produz evento | ElastiCache Redis + SQS |
 | **analytics-service** | Python | 8005 | Consome eventos da fila e grava estatísticas | DynamoDB (via SQS) |
 
 ---
 
-## 🗄 Os 3 Data Stores + 1 Fila
+## 🟣 Requisito 1 — Infraestrutura como Código (Terraform)
 
-Cada tipo de armazenamento foi escolhido pela natureza do dado que ele guarda. Usar a ferramenta certa para cada trabalho está no coração de uma arquitetura distribuída saudável.
+Toda a infraestrutura da Fase 2, antes criada à mão, foi reescrita como Terraform, organizado por domínio em [infra/](infra/) e apoiado em **módulos oficiais da comunidade** para as peças mais complexas (VPC e EKS).
 
-| Recurso | Tipo | Por que esta escolha |
+### O que foi provisionado
+
+| Item exigido | Implementação | Arquivo |
 |---|---|---|
-| **RDS PostgreSQL** | Relacional (SQL) | Dados **estruturados, duráveis e transacionais**: contas, flags e regras. Garante consistência **ACID** e relacionamentos, o que a torna ideal para o "registro da verdade". |
-| **ElastiCache (Redis)** | Cache em memória | O *hot path* do **evaluation** precisa de leitura em **sub-milissegundo**. O Redis serve respostas pré-computadas a altíssima velocidade, aliviando os bancos relacionais. |
-| **DynamoDB** | NoSQL (chave-valor) | O **analytics** tem **escrita massiva** de eventos com **esquema flexível**. O DynamoDB escala horizontalmente sem gerência de servidor e custa por requisição. Chave de partição: `event_id`. |
-| **SQS (Standard)** | Fila de mensagens *(não é data store)* | **Desacopla** o produtor (evaluation) do consumidor (analytics). Se o analytics ficar lento ou cair, os eventos **aguardam na fila** sem travar o *hot path*, o que traz resiliência por design. |
+| **Networking** (VPC, subnets pública/privada, IGW, route tables) | Módulo `terraform-aws-modules/vpc`, VPC `10.0.0.0/16`, 2 AZs, subnets públicas e privadas com as tags que o EKS exige, IGW e NAT Gateway (único, por economia) | [infra/main.tf](infra/main.tf) |
+| **Cluster EKS + Node Groups** | Módulo `terraform-aws-modules/eks` v21, Kubernetes 1.34, nós em **subnet privada**, addons `vpc-cni`/`kube-proxy`/`coredns`, OIDC habilitado | [infra/eks.tf](infra/eks.tf) |
+| **3 RDS PostgreSQL** | `for_each` sobre `auth`/`flag`/`targeting`, criptografia em repouso com **KMS**, senha no **Secrets Manager**, sem acesso público, SG liberado só aos nós | [infra/rds.tf](infra/rds.tf) |
+| **1 ElastiCache (Redis)** | Replication group, criptografia em repouso, subnet privada, SG referenciando os nós | [infra/elasticache.tf](infra/elasticache.tf) |
+| **1 Tabela DynamoDB** | `ToggleMasterAnalytics`, on-demand (`PAY_PER_REQUEST`), chave `event_id`, point-in-time recovery | [infra/dynamodb.tf](infra/dynamodb.tf) |
+| **1 Fila SQS** | `togglemaster-analytics-events` com criptografia (SSE) e **Dead-Letter Queue** (`maxReceiveCount = 5`) | [infra/dynamodb.tf](infra/dynamodb.tf) |
+| **5 repositórios ECR** | `for_each` sobre os 5 serviços, tags **imutáveis** e scan on push | [infra/ecr.tf](infra/ecr.tf) |
+| **Estado remoto no S3 + lock** | Backend S3 (`fase3/terraform.tfstate`), `encrypt = true` e `use_lockfile = true` | [infra/backend.tf](infra/backend.tf) |
+| **Identidade dos pods (IRSA)** | Roles de IAM de menor privilégio, ServiceAccounts anotadas, sem chave estática | [infra/irsa.tf](infra/irsa.tf) |
+| **Federação OIDC do CI** | Provider OIDC + role assumida pelo GitHub Actions, restrita ao repositório e à branch `main` | [infra/github-oidc.tf](infra/github-oidc.tf) |
 
-> **A diferença essencial:** RDS responde *"qual é a verdade?"* (consistência), Redis responde *"rápido!"* (latência), DynamoDB responde *"muita escrita, esquema livre"* (escala), e o SQS é o **amortecedor** que conecta os dois mundos sem acoplá-los.
+### Decisões de arquitetura que valem destacar
 
----
-
-## 🐳 Conteinerização (Docker)
-
-- **Dockerfiles multi-stage** para cada um dos 5 serviços:
-  - **Go (auth, evaluation):** binário estático em imagem `scratch`/mínima → imagens de **~32 MB**.
-  - **Python (flag, targeting, analytics):** base `slim`, dependências fixadas.
-- **Boas práticas:** usuário **não-root**, `HEALTHCHECK`, `.dockerignore`, varredura de vulnerabilidades (`docker scout`).
-- **`docker-compose.yml`** sobe o ecossistema completo: **9 contêineres** = 5 apps + **4 data stores locais** (2 PostgreSQL, 1 Redis, 1 DynamoDB Local), com `healthcheck` + `depends_on: service_healthy` garantindo a ordem de boot.
-
-> Localmente, **um único PostgreSQL hospeda dois databases** (`flag_db` + `targeting_db`) via script de init, enquanto o `auth-db` fica isolado (fronteira de segurança). Na nuvem, isso se separa em **3 RDS independentes**, como pede o desafio.
-
----
-
-## ☸️ Orquestração (Kubernetes)
-
-Manifestos declarativos para os 5 serviços, seguindo as **boas práticas** exigidas:
-
-- **Namespace** `togglemaster` (isolamento lógico).
-- **Deployment** (Pods usando as imagens do **ECR**) + **Service** `ClusterIP` (descoberta interna por nome).
-- **ConfigMap** (URLs de serviços internos, portas) + **Secret** em **base64** (senhas, endpoints e chaves).
-- **Requests/Limits** em todos os Deployments (definindo a **QoS Class** e protegendo o Node).
-- **Readiness / Liveness Probes** (`/health`): o readiness controla o tráfego, e o liveness reinicia os travados.
-- **Ingress (Nginx)** com roteamento por path (`/auth`, `/flags`, `/targeting`, `/evaluate`, `/analytics`) e *rewrite-target*.
-
-> O ambiente foi **validado integralmente no Kubernetes local** (Docker Desktop) **antes** de qualquer gasto na nuvem, por disciplina de custo e de-risking. Os manifestos de nuvem vivem em [`k8s/cloud/`](k8s/cloud).
+- **Lock de estado sem DynamoDB.** O backend usa a trava nativa do S3 (`use_lockfile`, Terraform 1.10+), dispensando a tabela DynamoDB que normalmente acompanha esse padrão. Menos um recurso para criar, pagar e manter, com a mesma segurança de concorrência.
+- **Nós em subnet privada.** Worker node com IP público é anti-padrão de segurança. Os nós ficam em subnet privada e saem para a internet apenas de saída via NAT Gateway; o control plane e os Load Balancers continuam públicos.
+- **Segurança por padrão na camada de dados.** Criptografia em repouso com chave KMS rotacionada, senhas geradas e guardadas pelo Secrets Manager (nenhuma senha em texto puro no código ou no state), e Security Group como *Policy Enforcement Point* (o banco só aceita conexão a partir do Security Group dos nós, não de um bloco de IP).
+- **Auditoria do próprio IaC.** O Terraform foi escaneado com o Trivy (`trivy config`) antes de aplicar. Achados de severidade alta foram corrigidos (ECR imutável, PITR no DynamoDB, IAM database authentication no RDS) e os demais foram aceitos com justificativa documentada.
 
 ---
 
-## ☁️ Infraestrutura na Nuvem (AWS)
+## 🟢 Requisito 2 — Pipeline de CI e DevSecOps
 
-Provisionamento na **Opção B** (conta pessoal, IAM completo):
+Cada um dos 5 microsserviços tem um workflow de CI no GitHub Actions que dispara **a cada push e a cada Pull Request na `main`** (com filtro de caminho, para que só o serviço alterado rode). Para evitar duplicação, a lógica vive em **dois workflows reutilizáveis** (um por linguagem) e cada serviço é um chamador enxuto.
 
-| Recurso | Implementação |
+- Templates: [reusable-go-ci.yml](.github/workflows/reusable-go-ci.yml) e [reusable-python-ci.yml](.github/workflows/reusable-python-ci.yml)
+- Chamadores: [auth-service.yml](.github/workflows/auth-service.yml), [flag-service.yml](.github/workflows/flag-service.yml), [targeting-service.yml](.github/workflows/targeting-service.yml), [evaluation-service.yml](.github/workflows/evaluation-service.yml), [analytics-service.yml](.github/workflows/analytics-service.yml)
+
+### Os estágios do pipeline
+
+| Estágio exigido | Implementação |
 |---|---|
-| **Cluster EKS** | `eksctl create cluster -f infra/cluster.yaml` (**Infra as Code**): K8s 1.32, 2× `t3.medium`, `withOIDC: true`, NAT desativado (nós públicos via Internet Gateway → economia). |
-| **ECR** | 5 repositórios (um por serviço); imagens publicadas via `docker push`. |
-| **RDS PostgreSQL × 3** | Instâncias independentes para auth, flag e targeting. |
-| **ElastiCache (Redis)** | Cache do evaluation-service. |
-| **DynamoDB** | Tabela `ToggleMasterAnalytics` (on-demand, PK `event_id`). |
-| **SQS (Standard)** | Fila `togglemaster-analytics-events` (produtor: evaluation; consumidor: analytics). |
-| **Metrics Server** | Necessário para o HPA medir CPU. |
-| **Nginx Ingress Controller** | Provisiona o Load Balancer da AWS. |
-| **IRSA** | `IAM Roles for Service Accounts` dão permissão **least-privilege** aos pods que falam com a AWS (evaluation → SQS; analytics → SQS + DynamoDB), **sem chaves estáticas**. |
+| **Build & Unit Test** | `go build` + `go test` (Go); `pytest` com um PostgreSQL efêmero como *service container* para os apps Flask (Python) |
+| **Lint / Static Analysis** | `go vet` + `gofmt` (Go); `flake8` no subconjunto de erros reais (Python) |
+| **SCA (dependências)** | **Trivy** em modo `fs` sobre `go.sum`/`requirements.txt`, bloqueando em CRÍTICO |
+| **SAST (código-fonte)** | **gosec** (Go) e **bandit** (Python) |
+| **Regra de bloqueio** | Todos os scans usam `exit-code: 1` em severidade **CRÍTICA**: o pipeline falha e **não prossegue** |
+| **Docker Build** | Build da imagem multi-stage |
+| **Container Scan** | **Trivy** em modo `image` sobre a imagem construída, antes do push (`ignore-unfixed` para bloquear só o crítico corrigível) |
+| **Login + Push no ECR** | Autenticação via **OIDC** (sem chave estática) e push com a tag igual ao **hash do commit** (`${{ github.sha }}`) |
+| **Extra: SBOM** | Geração do SBOM (CycloneDX) como artefato do build |
 
-### Por que 3 instâncias RDS separadas (Database per Service)
+### Autenticação sem chave estática (OIDC)
 
-A melhor prática de mercado é manter uma instância de banco isolada por serviço, o padrão *Database per Service*, e foi ela que adotamos na nuvem, com três instâncias RDS independentes para auth, flag e targeting. A motivação é resiliência e escala. Compartilhar uma instância entre dois serviços criaria um ponto único de falha, já que um pico de carga no targeting poderia derrubar junto o flag, e ainda impediria dimensionar cada banco de forma independente.
+O estágio de push não guarda `AWS_ACCESS_KEY_ID` em secret nenhum. O GitHub emite um token OIDC assinado, a AWS o valida contra a trust policy (que confere repositório e branch), e o STS devolve credencial temporária. É o mesmo princípio do IRSA do Requisito 1, agora aplicado ao CI, mantendo a política de "nenhuma credencial de longa duração".
 
-No ambiente local, onde a especificação do Docker Compose pede exatamente duas instâncias de PostgreSQL, mantivemos o auth isolado por ser a fronteira de segurança que guarda os hashes das chaves de API, e reunimos flag e targeting em uma única instância com dois databases. Essa concessão vale apenas para o desenvolvimento local. Na nuvem, que representa o ambiente de produção, seguimos a separação completa.
+### A regra de bloqueio provada duas vezes
 
----
-
-## 📈 Escalabilidade
-
-A escalabilidade foi desenhada **por perfil de serviço**: cada um escala pelo sinal que de fato reflete a sua carga.
-
-### evaluation-service → HPA por CPU
-
-O evaluation é o *hot path*, sensível a processamento. Ele escala por um **HorizontalPodAutoscaler** baseado na **utilização média de CPU** (alvo `70%`, `minReplicas: 1`, `maxReplicas: 5`).
-
-- O **Metrics Server** é o "termômetro" que alimenta o HPA; sem ele, o HPA não consegue medir a CPU e fica cego.
-- O HPA mede a CPU como **percentual do `request`** definido no Deployment, não em valor absoluto — por isso `requests` bem definidos são a régua da escala.
-- `minReplicas: 1` mantém a demonstração legível (sai de 1 e cresce); `maxReplicas: 5` é a trava contra escalar sem limite e estourar a conta.
-
-> Manifesto: [`k8s/cloud/evaluation/hpa.yaml`](k8s/cloud/evaluation/hpa.yaml).
-
-### analytics-service → KEDA por profundidade da fila SQS
-
-O analytics é **orientado a eventos**, então escalar por CPU seria reagir ao *efeito*, não à *causa*. Na nuvem (Opção B), ele escala com **KEDA**, que observa **diretamente a profundidade da fila SQS** e ajusta as réplicas de **0 a 5**.
-
-- **Scale-to-zero:** com a fila vazia, o analytics fica em **zero pods** e não consome recurso; quando chegam eventos, o KEDA o **ativa a partir do zero** — algo que o HPA por CPU não faz.
-- Gatilho `aws-sqs-queue` com `queueLength: "5"` (réplicas ≈ mensagens ÷ 5), `pollingInterval: 15s`, `cooldownPeriod: 60s`.
-- O acesso do KEDA à fila é concedido via **IRSA** (`TriggerAuthentication` com `podIdentity: aws`, `identityOwner: keda`), mantendo o padrão de **não usar chaves estáticas**.
-
-> Manifesto: [`k8s/cloud/analytics/scaledobject.yaml`](k8s/cloud/analytics/scaledobject.yaml).
-
-### Por que dois mecanismos diferentes
-
-O enunciado posiciona o **HPA por CPU** como requisito mínimo (o *workaround* da Opção A/Academy: a fila enche → a CPU sobe → escala) e o **KEDA** — escalar por `queueDepth` do SQS, de 0 a N — como o **"desafio real" recomendado para a Opção B**. Como este projeto roda em **conta pessoal**, o IRSA libera o KEDA sem workaround. A escolha foi **HPA-CPU no evaluation** e **KEDA-SQS no analytics**, cada serviço reagindo à sua própria causa. Como baseline compatível com a Opção A, o analytics também tem um HPA por CPU validado no ambiente local ([`k8s/analytics/hpa.yaml`](k8s/analytics/hpa.yaml)), substituído pelo KEDA na nuvem.
-
-> **Demonstração combinada:** uma carga única no `/evaluate` faz **os dois** autoscalers reagirem ao mesmo tráfego — cada avaliação vira um evento na fila, então o evaluation escala por CPU e o analytics escala pela profundidade da SQS, ambos indo a 5 réplicas simultaneamente.
+1. **Teste adversarial deliberado.** Uma dependência com CVE crítica conhecida (`PyYAML 5.3.1`, CVE-2020-14343) foi injetada num Pull Request. O gate `security` detectou o crítico, **falhou com exit code 1** e deixou o merge bloqueado, provando o fluxo de PR-gate sem que a vulnerabilidade tocasse a `main`.
+2. **Um caso real, no calor da entrega.** Durante a Fase 3, o Trivy bloqueou a `CVE-2026-56854` (crítica, bypass de autenticação SSH) em `golang.org/x/crypto`, uma dependência **transitiva** do auth-service. A correção exigiu atualizar a biblioteca e o toolchain para Go 1.25. O gate barrou uma ameaça real que ninguém escolheu, exatamente o objetivo do shift-left.
 
 ---
 
-## 🔒 Segurança
+## 🟠 Requisito 3 — Entrega Contínua e GitOps
 
-- **Segredos fora do controle de versão:** `secret.yaml` é gitignored (`k8s/**/secret.yaml`); apenas templates `secret.yaml.example` são versionados.
-- **Secrets em base64** nos manifestos (exigência do enunciado).
-- **Resposta a vazamento aplicada na prática:** quando um secret foi commitado por engano, a resposta correta foi **rotacionar os valores primeiro** e depois limpar o histórico.
-- **IRSA no lugar de chaves estáticas:** os pods recebem credenciais **temporárias** via OIDC; nenhuma *access key* fica armazenada em Secret.
-- **Isolamento de rede e menor privilégio:** RDS/ElastiCache não expostos publicamente; cada IAM Role concede só o necessário.
+O deploy abandonou o push direto. Os manifestos vivem em [gitops/](gitops/), o ArgoCD é instalado por Terraform, o CI escreve a nova tag no Git, e o ArgoCD reconcilia o cluster automaticamente.
 
----
+### Estrutura do repositório de GitOps
 
-## ✅ Requisitos do Enunciado (Rastreabilidade)
+O diretório usa **Kustomize** (nativo no `kubectl`):
 
-Mapa direto de cada requisito da Fase 2 para onde ele está implementado e documentado.
+```
+gitops/
+  base/                          <- manifestos por serviço (Deployment, Service, ConfigMap, HPA/KEDA)
+    auth-service/ ... analytics-service/ ingress/
+  apps/                          <- as Applications do ArgoCD (uma por serviço + ingress)
+```
 
-| # | Requisito (enunciado) | Onde está |
+| Item exigido | Implementação | Onde |
 |---|---|---|
-| 1 | Dockerfile otimizado (multi-stage) para os 5 microsserviços | [Conteinerização](#-conteinerização-docker) · `services/*/Dockerfile` |
-| 2 | `docker-compose.yml` com 5 apps + 4 data stores (2 PostgreSQL, 1 Redis, 1 DynamoDB Local) | [Conteinerização](#-conteinerização-docker) · `docker-compose.yml` |
-| 3 | Cluster EKS (Opção B, `eksctl`) | [Infra na Nuvem](#️-infraestrutura-na-nuvem-aws) · `infra/cluster.yaml` |
-| 4 | 5 repositórios ECR + push das imagens | [Infra na Nuvem](#️-infraestrutura-na-nuvem-aws) |
-| 5 | 3 instâncias RDS PostgreSQL independentes | [Database per Service](#por-que-3-instâncias-rds-separadas-database-per-service) |
-| 6 | 1 cluster ElastiCache Redis | [Infra na Nuvem](#️-infraestrutura-na-nuvem-aws) |
-| 7 | 1 tabela DynamoDB | [Data Stores](#-os-3-data-stores--1-fila) |
-| 8 | 1 fila SQS Standard | [Data Stores](#-os-3-data-stores--1-fila) |
-| 9 | Metrics Server instalado | [Infra na Nuvem](#️-infraestrutura-na-nuvem-aws) · [Como Executar](#3-provisionar-na-nuvem-aws-eks) |
-| 10 | Nginx Ingress Controller (via IRSA na Opção B) | [Infra na Nuvem](#️-infraestrutura-na-nuvem-aws) |
-| 11 | Manifestos: Namespace, Deployment, Service ClusterIP, Secret, ConfigMap | [Orquestração](#️-orquestração-kubernetes) · `k8s/cloud/` |
-| 12 | Ingress com roteamento por path | [Orquestração](#️-orquestração-kubernetes) · `k8s/cloud/ingress.yaml` |
-| 13 | Boas práticas: requests/limits, secrets em base64, readiness/liveness, namespaces | [Orquestração](#️-orquestração-kubernetes) · [Segurança](#-segurança) |
-| 14 | HPA no evaluation-service por CPU (`70%`) | [Escalabilidade](#-escalabilidade) · `k8s/cloud/evaluation/hpa.yaml` |
-| 15 | Escalabilidade do analytics: KEDA por `queueDepth` do SQS, de 0 a N (Opção B) | [Escalabilidade](#-escalabilidade) · `k8s/cloud/analytics/scaledobject.yaml` |
-| 16 | Entregáveis: vídeo, relatório, links, badge Credly | [Entregáveis](#-entregáveis-da-fase-2) |
+| **Manifestos versionados** | Bases Kustomize dos 5 serviços + ingress | [gitops/base/](gitops/base/) |
+| **Instalação do ArgoCD** | `helm_release` no Terraform (chart `argo-cd`) | [infra/argocd.tf](infra/argocd.tf) |
+| **Controllers de plataforma** | `helm_release` do nginx-ingress, metrics-server e KEDA (com IRSA para o operador) | [infra/addons.tf](infra/addons.tf) |
+| **Atualização automática da tag** | Job `update-manifest` no CI: `kustomize edit set image ...:<commit-sha>` e commit de volta no Git | nos reusable workflows |
+| **Sync automático** | `syncPolicy.automated` (com `prune` e `selfHeal`) nas Applications | [gitops/apps/](gitops/apps/) |
+| **ArgoCD gerenciando os serviços** | 6 Applications (5 microsserviços + ingress) `Synced` e `Healthy` no cluster | validado (evidência no vídeo) |
+
+### O loop fechado, provado no cluster
+
+Um push num serviço gera a imagem no ECR com a tag do commit; o job `update-manifest` reescreve essa tag no `gitops/`; o ArgoCD detecta o diff e sincroniza. Na validação, o `evaluation-service` subiu rodando a imagem cujo hash era exatamente o do commit de correção do dia, com o log do pod confirmando o serviço no ar. As seis Applications ficaram `Synced` e `Healthy`.
+
+### Detalhes que mostram domínio
+
+- **A fronteira Terraform ↔ ArgoCD.** O Terraform é dono da base (cluster, rede, dados, IRSA, namespace, ArgoCD e controllers); o ArgoCD é dono das aplicações. Sem sobreposição de donos.
+- **Bootstrap sem armadilha de CRD.** As Applications entram por um `kubectl apply -f gitops/apps/` único, porque aplicá-las via Terraform exigiria o CRD do ArgoCD já existente em tempo de `plan` (problema clássico de ovo e galinha).
+- **GitOps convivendo com autoscaler.** O KEDA (analytics) e o HPA (evaluation) alteram o número de réplicas, o que o ArgoCD leria como *drift*. A solução foi declarar `ignoreDifferences` em `/spec/replicas` nessas Applications: quem manda nas réplicas é o autoscaler, não o Git.
+- **Segredos fora do Git.** Os Secrets (senhas de banco, chaves) não são versionados; são injetados fora do fluxo GitOps, com as senhas vindas do Secrets Manager. O repositório declara a forma, não os segredos.
 
 ---
 
-## 🚀 Como Executar
+## 🔒 Segurança e Modelagem de Ameaças
 
-### 1. Rodar localmente (Docker Compose)
+A segurança é transversal ao projeto, não um estágio isolado:
+
+- **Nenhuma credencial de longa duração.** OIDC no CI e IRSA nos pods; as credenciais são sempre temporárias.
+- **Menor privilégio real.** Cada role de IAM concede só o que o componente usa (o CI só faz push no ECR; o `evaluation` só `SendMessage` na SQS; o `analytics` só consome a fila e grava no DynamoDB; o KEDA só lê a profundidade da fila).
+- **Defesa em profundidade no pipeline.** SAST (código), SCA (dependências) e scan de imagem (SO da imagem base) cobrem fonte e artefato final, com bloqueio em severidade crítica.
+- **Isolamento de rede.** Bancos e cache sem exposição pública, em subnets privadas, com Security Group como ponto de imposição de política.
+- **Criptografia.** Em repouso no RDS (KMS), na SQS (SSE) e na ElastiCache.
+
+Foi feita também uma **modelagem de ameaças** com duas lentes complementares, **STRIDE** (design) e **MITRE ATT&CK** (táticas reais de adversário), mapeando cada técnica de ataque relevante à mitigação já existente na arquitetura. As decisões de risco (por exemplo, vulnerabilidades altas aceitas conscientemente em dependências legadas) foram documentadas no espírito do padrão **VEX**, que declara a explorabilidade de cada vulnerabilidade no contexto real do sistema.
+
+---
+
+## ✅ Rastreabilidade dos Requisitos
+
+Mapa direto de cada exigência do enunciado para a evidência no repositório.
+
+### Requisito 1 — IaC
+
+| # | Exigência | Onde está |
+|---|---|---|
+| 1.1 | VPC, subnets pública/privada, IGW, route tables | [infra/main.tf](infra/main.tf) |
+| 1.2 | Cluster EKS + Node Groups | [infra/eks.tf](infra/eks.tf) |
+| 1.3a | 3 RDS PostgreSQL | [infra/rds.tf](infra/rds.tf) |
+| 1.3b | 1 ElastiCache Redis | [infra/elasticache.tf](infra/elasticache.tf) |
+| 1.3c | 1 Tabela DynamoDB (`ToggleMasterAnalytics`) | [infra/dynamodb.tf](infra/dynamodb.tf) |
+| 1.4 | 1 Fila SQS | [infra/dynamodb.tf](infra/dynamodb.tf) |
+| 1.5 | 5 repositórios ECR (via Terraform) | [infra/ecr.tf](infra/ecr.tf) |
+| 1.6 | Backend remoto no S3 (+ `use_lockfile`) | [infra/backend.tf](infra/backend.tf) |
+| 1.7 | Uso de módulos | módulos VPC e EKS em [infra/main.tf](infra/main.tf) e [infra/eks.tf](infra/eks.tf) |
+
+### Requisito 2 — CI & DevSecOps
+
+| # | Exigência | Onde está |
+|---|---|---|
+| 2.1 | Workflow para cada um dos 5 serviços | [.github/workflows/](.github/workflows/) |
+| 2.2 | Dispara em Push e Pull Request na `main` | bloco `on:` de cada chamador |
+| 2.3 | Build & Unit Test | job `build-test` nos reusable |
+| 2.4 | Linter / Static Analysis | job `lint` (go vet/gofmt, flake8) |
+| 2.5 | SCA (Trivy fs) | job `security` |
+| 2.6 | SAST (gosec / bandit) | job `security` |
+| 2.7 | Bloqueio em vulnerabilidade CRÍTICA | `exit-code: 1` nos scans |
+| 2.8 | Docker Build + Container Scan (Trivy image) | job `build-push` |
+| 2.9 | Login no ECR + push com tag do commit hash | job `build-push` (OIDC, `${{ github.sha }}`) |
+
+### Requisito 3 — CD & GitOps
+
+| # | Exigência | Onde está |
+|---|---|---|
+| 3.1 | Pasta com os manifestos das aplicações | [gitops/](gitops/) |
+| 3.2 | Instalação do ArgoCD | [infra/argocd.tf](infra/argocd.tf) |
+| 3.3 | Passo do CI que atualiza a tag no GitOps | job `update-manifest` nos reusable |
+| 3.4 | ArgoCD com sync automático dos serviços | [gitops/apps/](gitops/apps/) |
+
+---
+
+## 🚀 Como Reproduzir do Zero
+
+> Pré-requisitos: AWS CLI configurado (conta pessoal, Opção B), Terraform ≥ 1.10, `kubectl` e Docker.
+
+### 1. Provisionar a infraestrutura
 
 ```bash
-# Clonar
-git clone https://github.com/artur-duart/togglemaster-devops-fiap.git
-cd togglemaster-devops-fiap
-
-# Configurar variáveis de ambiente locais
-cp .env.example .env   # preencha os valores (senhas dos bancos e a AUTH_MASTER_KEY)
-
-# Subir os 9 contêineres (5 apps + 4 data stores)
-docker compose up -d --build
-
-# Conferir a saúde
-docker compose ps
-```
-
-### 2. Testar o fluxo end-to-end (na prática)
-
-O jeito mais fácil é importar a coleção **[`togglemaster.postman_collection.json`](togglemaster.postman_collection.json)** no Postman: ela cobre o ciclo completo na ordem certa — *health checks → criar chave de API → criar flag → criar regra de targeting → avaliar*.
-
-Preferindo a linha de comando, o mesmo fluxo sai com `curl` (a `MASTER_KEY` é o valor de `AUTH_MASTER_KEY` que você preencheu no `.env`):
-
-```bash
-# 1) Sanidade: os 5 serviços respondendo
-for p in 8001 8002 8003 8004 8005; do curl -s localhost:$p/health; echo; done
-
-# 2) Emitir uma chave de API (usa a MASTER_KEY) e guardar em KEY
-KEY=$(curl -s -X POST localhost:8001/admin/keys \
-  -H "Authorization: Bearer $AUTH_MASTER_KEY" -H "Content-Type: application/json" \
-  -d '{"name":"demo"}' | grep -oE 'tm_key_[a-zA-Z0-9]+')
-
-# 3) Criar uma feature flag
-curl -s -X POST localhost:8002/flags \
-  -H "Authorization: Bearer $KEY" -H "Content-Type: application/json" \
-  -d '{"name":"feature-beta","description":"beta","is_enabled":true}'
-
-# 4) Criar a regra de segmentação (100% → garante result:true)
-curl -s -X POST localhost:8003/rules \
-  -H "Authorization: Bearer $KEY" -H "Content-Type: application/json" \
-  -d '{"flag_name":"feature-beta","is_enabled":true,"rules":{"type":"PERCENTAGE","value":100}}'
-
-# 5) Avaliar: a flag está ligada para o usuário?
-curl -s "localhost:8004/evaluate?user_id=user-1&flag_name=feature-beta"
-# -> {...,"result":true}
-```
-
-O passo 5 fecha o ciclo: o evaluation consulta o cache no Redis, cai no flag e no targeting em caso de *miss*, calcula o `true/false` e publica o evento na fila para o analytics consumir.
-
-### 3. Provisionar na nuvem (AWS EKS)
-
-O caminho abaixo segue o método do enunciado (Opção B, conta pessoal): provisionar a infraestrutura, configurar o cluster e aplicar os manifestos.
-
-```bash
-# a) Cluster EKS como Infra as Code (cria VPC, nós e as roles de IAM)
-eksctl create cluster -f infra/cluster.yaml
+terraform -chdir=infra init
+terraform -chdir=infra apply
 aws eks update-kubeconfig --region us-east-1 --name togglemaster
-
-# b) Provisionar os recursos gerenciados (via Console ou AWS CLI):
-#    5 repositórios ECR · 3 RDS PostgreSQL · 1 ElastiCache Redis
-#    1 tabela DynamoDB · 1 fila SQS Standard
-#    e publicar as 5 imagens nos repositórios ECR (docker build + push).
-
-# c) Configurar o cluster
-kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml   # HPA
-helm install ingress-nginx ingress-nginx/ingress-nginx -n ingress-nginx --create-namespace                    # Ingress + Load Balancer
-helm install keda kedacore/keda -n keda --create-namespace                                                    # autoscaling por fila
-
-# d) Preencher os Secrets (endpoints e senhas dos recursos criados em "b") e aplicar os manifestos
-kubectl apply -f k8s/cloud/ -R
-
-# e) Validar
-kubectl get pods -n togglemaster
-kubectl get ingress -n togglemaster
-kubectl get hpa -n togglemaster
-kubectl get scaledobject -n togglemaster
 ```
 
-> 💡 **Disciplina de custo:** a infra cobrada por hora (EKS, RDS, ElastiCache, Load Balancer) é provisionada apenas para a demonstração e **derrubada logo após** — apagando o Ingress/Load Balancer, rodando `eksctl delete cluster -f infra/cluster.yaml` e removendo os RDS e o ElastiCache.
+Isso cria a rede, o cluster EKS, os bancos, a fila, os ECR, o IRSA, e instala ArgoCD, nginx-ingress, metrics-server e KEDA.
+
+### 2. Injetar os segredos e a configuração de ambiente
+
+Os segredos ficam fora do Git. Aplique-os uma vez (as senhas do RDS vêm do Secrets Manager) e ajuste o endpoint do Redis no ConfigMap do `evaluation`, que muda a cada apply.
+
+### 3. Fazer o bootstrap do GitOps
+
+```bash
+kubectl apply -f gitops/apps/
+kubectl get applications -n argocd
+```
+
+O ArgoCD passa a reconciliar os 5 serviços e o ingress a partir do diretório `gitops/`. A partir daí, todo deploy é um commit no Git.
+
+### 4. Derrubar o ambiente (disciplina de custo)
+
+```bash
+terraform -chdir=infra destroy
+```
 
 ---
 
 ## 🚧 Desafios e Decisões Técnicas
 
-A jornada da Opção B (conta pessoal) trouxe desafios reais que moldaram as decisões do projeto:
-
-### 1. A trava do Free Tier nos Node Groups
-- **O Desafio:** o primeiro `eksctl create cluster` falhou, porque o *managed node group* estourou o timeout. O control plane subiu, mas os nós, não.
-- **A Decisão:** o diagnóstico via `aws cloudformation describe-stack-events` revelou a causa exata: `InvalidParameterCombination - The specified instance type is not eligible for Free Tier`. A conta nova, em **"free plan"**, só permitia instâncias *free-tier-eligible*. A solução foi **migrar para o plano pago**, sem o qual EKS, RDS e ElastiCache nem chegam a rodar, aproveitando o crédito promocional e mantendo a disciplina de derrubar os recursos logo após cada sessão.
-
-### 2. NAT Gateway desligado por design (FinOps)
-- **O Desafio:** o `eksctl` cria um NAT Gateway por padrão (~US$0,045/h), mas ele só serve a sub-redes **privadas**.
-- **A Decisão:** como os nós foram posicionados em **sub-rede pública** (saída via Internet Gateway, gratuita), o NAT é desnecessário. Defini `vpc.nat.gateway: Disable` no `cluster.yaml`, eliminando um custo silencioso clássico.
-
-### 3. IRSA no lugar de credenciais estáticas
-- **O Desafio:** os pods de evaluation e analytics precisam falar com SQS/DynamoDB. Localmente isso usava chaves *dummy* em Secret, o que é inseguro para produção.
-- **A Decisão:** habilitei **OIDC** no cluster (`withOIDC: true`) e usei **IRSA**, de modo que cada serviço recebe uma ServiceAccount ligada a uma IAM Role *least-privilege*, com credenciais temporárias. As chaves estáticas **deixaram de existir** na nuvem.
-
-### 4. Um Postgres, dois bancos (local) → três RDS (nuvem)
-- **O Desafio:** localmente, flag e targeting compartilhavam uma instância PostgreSQL com dois databases (economia de recursos no laptop).
-- **A Decisão:** na nuvem, o enunciado pede **isolamento real**, com três instâncias RDS independentes. Os manifestos de nuvem refletem essa separação, com cada serviço apontando para seu próprio endpoint.
-
-### 5. Um Secret vazado e a ordem certa de reagir
-- **O Desafio:** em algum momento commitei um Secret do Kubernetes com os valores em base64 para o GitHub. Como base64 é apenas codificação reversível, e não criptografia, na prática aquilo vazou.
-- **A Decisão:** a resposta seguiu a ordem que vale na vida real. Primeiro rotacionei os segredos, partindo do princípio de que tudo que toca um repositório remoto deve ser tratado como comprometido para sempre. Só depois limpei o histórico. Como o conteúdo estava em um único commit, um `git commit --amend` com `--force-with-lease` resolveu, sem precisar de ferramenta pesada como o BFG. Para não repetir o erro, passei a versionar apenas um `secret.yaml.example` com placeholders, deixando o arquivo real no `.gitignore`.
-
-### 6. Código que não compilava e a lição da reprodutibilidade
-- **O Desafio:** o código-fonte recebido não buildava de primeira. O auth-service tinha um `go.mod` malformado e estava sem o `go.sum`, e os serviços em Python quebravam no boot por causa de um erro no Werkzeug.
-- **A Decisão:** no lado Go, um `go mod tidy` reconstruiu as dependências. No lado Python, o problema era mais sutil. O Werkzeug é uma dependência transitiva do Flask, não estava com a versão travada, e uma versão mais nova havia removido uma função que a aplicação usava. Bastou fixar o Werkzeug na versão correta. O episódio reforçou, na prática, por que reprodutibilidade de verdade exige travar até as dependências indiretas.
-
-### 7. KEDA sem permissão para ler a fila (403 AssumeRole)
-- **O Desafio:** com o `identityOwner` errado, o operador do KEDA tentava assumir a Role do próprio serviço e batia em **`403 AssumeRole`** (`KEDAScalerFailed`), sem conseguir ler a profundidade da fila. O analytics ficava travado em zero.
-- **A Decisão:** dei ao **keda-operator** a sua própria ServiceAccount via IRSA, com uma policy *least-privilege* de leitura da fila (`sqs:GetQueueAttributes`), e ajustei o `TriggerAuthentication` para `identityOwner: keda`. O scale-from-zero passou a funcionar de imediato.
-
-### 8. Metrics Server e a carga que precisa vir de dentro
-- **O Desafio:** logo após subir, o HPA aparecia com CPU `<unknown>`; e a primeira tentativa de gerar carga a partir da minha máquina saturava o meu PC antes do pod, e a CPU do serviço mal chegava a 60%.
-- **A Decisão:** o `<unknown>` some sozinho depois que o Metrics Server coleta a primeira janela (~1 min). E a carga passou a ser gerada **de dentro do cluster**, com um Pod efêmero de load (`hey`), colocando a pressão no serviço e não na minha rede. Com isso, os dois autoscalers subiram juntos até 5 réplicas sob o mesmo tráfego.
+- **Eliminação de drift para provar o IaC.** No caminho, o `apply` revelou recursos ainda criados manualmente na Fase 2 (fora do Terraform). Em vez de importar, eles foram apagados e recriados por código, tornando a afirmação "tudo sobe do zero por IaC" literalmente verdadeira.
+- **Diagnóstico sistemático do nó que não ficava `Ready`.** Duas causas diferentes (rede sem NAT e ausência do addon VPC CNI) davam a mesma mensagem genérica. Só provar cada elo da corrente com dados reais, em vez de chutar, separou os dois problemas.
+- **Pinning de versão como princípio de CI.** Depois de falhas seguidas com `@latest` e tags inexistentes, tudo passou a ser fixado: actions, gosec, Trivy, charts Helm. `@latest` é uma bomba-relógio em CI.
+- **A CVE crítica pega no ato.** O gate barrou uma vulnerabilidade crítica recém-divulgada numa dependência transitiva. Avaliei declarar a não-explorabilidade via VEX (o pacote vulnerável não é usado), mas optei pela remediação completa, com bump de toolchain para Go 1.25.
+- **O drift GitOps × autoscaler.** Resolvido com `ignoreDifferences` no campo de réplicas, reconhecendo que nem todo campo tem o Git como fonte da verdade.
+- **Teardown do EKS travando no namespace.** O `destroy` prendia na exclusão do namespace por causa de APIServices órfãos (metrics-server/KEDA) e do finalizer do ScaledObject. A limpeza desses recursos destravou a remoção, sem deixar nada pago para trás.
 
 ---
 
-## 📦 Entregáveis da Fase 2
+## 💰 Disciplina de Custo (FinOps)
 
-- 🎥 **Vídeo de Demonstração** (até 20 min): [youtu.be/zUtUB7HrsFI](https://youtu.be/zUtUB7HrsFI)
-- 💻 **Repositório:** [github.com/artur-duart/togglemaster-devops-fiap](https://github.com/artur-duart/togglemaster-devops-fiap) (tag da entrega: `v2.0.0-fase2`)
-- 📄 **Relatório de Entrega:** documento em PDF enviado junto à submissão da fase (nome, RM, usuário do Discord e os links de entrega).
-- 🏅 **Trilha Google Cloud Skills Boost** (pontuação extra, +10): [badge público no Credly](https://www.credly.com/badges/99eb0dd5-f203-40c2-9c6c-6f72e72ec9f2/public_url) ✅ concluída
+A infraestrutura cobrada por hora (EKS, RDS, ElastiCache, NAT, Load Balancer) é provisionada apenas para validação e demonstração, e **derrubada logo em seguida** com `terraform destroy`. O ciclo `apply` → validação → `destroy` reproduz o ambiente inteiro em minutos, sem deixar recursos ociosos na fatura.
+
+O custo bruto do mês reflete apenas as poucas subidas do ambiente para validação e gravação. Como cada ciclo é curto e encerrado com `destroy`, o footprint completo fica na casa de poucos dólares por mês, e no período os créditos disponíveis cobrem o uso, deixando o custo líquido praticamente em zero.
+
+| Métrica (mês corrente) | Valor |
+| ---------------------- | ----- |
+| Custo no mês até a data (bruto) | **US$ 20,97** |
+| Previsão de fechamento do mês | **US$ 22,70** |
+| Mesmo período do mês anterior | US$ 0,82 |
+| Custo total do mês anterior | US$ 1,25 |
+
+O salto em relação ao mês anterior corresponde exatamente às subidas do cluster para testar a stack de ponta a ponta e gravar a demonstração. Fora desses momentos, o ambiente permanece destruído e a fatura ociosa é zero.
+
+![Resumo de custos da AWS mostrando o custo do mês até a data e a previsão de fechamento](assets/finops-cost-summary.png)
+
+---
+
+## 📦 Entregáveis da Fase 3
+
+- 🎥 **Vídeo de Demonstração** (até 20 min): **[assista aqui](https://youtu.be/FzPVnhvLdOI)**. Cobre o `terraform plan` sem drift, o pipeline DevSecOps falhando e depois passando, o CI atualizando a tag no GitOps, o ArgoCD sincronizando sozinho e o `terraform destroy` ao final.
+- 💻 **Código-fonte:** todo o Terraform ([infra/](infra/)), os workflows ([.github/workflows/](.github/workflows/)) e os manifestos GitOps ([gitops/](gitops/)) neste repositório.
+- 📄 **Relatório de Entrega:** este README, acompanhado do print de custo.
 
 ---
 
 ## 🏷 Versionamento
 
-Usamos **Git Tags** para marcar a entrega de cada fase da pós-graduação:
-
-- `v1.0.0-fase1`: MVP Monolítico (EC2 + RDS).
-- `v2.0.0-fase2`: Ecossistema de Microsserviços em Kubernetes/EKS.
+- `v1.0.0-fase1`: MVP monolítico (EC2 + RDS).
+- `v2.0.0-fase2`: microsserviços em Kubernetes/EKS (infra manual).
+- `v3.0.0-fase3`: IaC (Terraform), CI/CD DevSecOps e GitOps (ArgoCD).
 
 ---
 
