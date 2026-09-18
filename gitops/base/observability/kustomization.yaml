@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
 - namespace.yaml
 - servicemonitor-ingress-nginx.yaml
+- servicemonitor-otel-collector.yaml
