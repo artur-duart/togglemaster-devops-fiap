@@ -13,6 +13,11 @@ resource "helm_release" "ingress_nginx" {
   version          = "4.15.1"
   namespace        = "ingress-nginx"
   create_namespace = true
+
+  set {
+    name  = "controller.metrics.enabled"
+    value = "true"
+  }
 }
 
 resource "aws_iam_policy" "keda" {
