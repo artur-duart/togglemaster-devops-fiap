@@ -12,10 +12,10 @@ togglemaster.postman_collection.json
 *.tfvars
 
 # --- Notas de trabalho (local) ---
-CRONOGRAMA.md
-CRONOGRAMA.pdf
-DESTAQUES-RELATORIO.md
-ROTEIRO-VIDEO.md
+PLANO-FASE4.md
+CRONOGRAMA-FASE4.md
+CRONOGRAMA-FASE4.pdf
+/arquivo-fase3
 /video
 
 # --- Material de aula FIAP (não versionar) ---
