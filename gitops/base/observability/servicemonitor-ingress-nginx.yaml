@@ -1,0 +1,19 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: ingress-nginx
+  namespace: observability
+  labels:
+    app.kubernetes.io/part-of: togglemaster-observability
+spec:
+  namespaceSelector:
+    matchNames:
+      - ingress-nginx
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: ingress-nginx
+      app.kubernetes.io/component: controller
+  endpoints:
+    - port: metrics
+      path: /metrics
+      interval: 30s
