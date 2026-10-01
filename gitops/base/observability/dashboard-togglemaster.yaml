@@ -1,0 +1,97 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: togglemaster-overview-dashboard
+  namespace: observability
+  labels:
+    grafana_dashboard: "1"
+    app.kubernetes.io/part-of: togglemaster-observability
+data:
+  togglemaster-overview.json: |
+    {
+      "uid": "togglemaster-overview",
+      "title": "ToggleMaster — Visão Geral",
+      "schemaVersion": 39,
+      "editable": true,
+      "time": { "from": "now-1h", "to": "now" },
+      "refresh": "30s",
+      "panels": [
+        {
+          "id": 1,
+          "type": "stat",
+          "title": "Uso de CPU do cluster",
+          "datasource": { "type": "prometheus" },
+          "gridPos": { "h": 6, "w": 6, "x": 0, "y": 0 },
+          "fieldConfig": { "defaults": { "unit": "percent", "min": 0, "max": 100 }, "overrides": [] },
+          "targets": [
+            { "refId": "A", "expr": "100 * (1 - avg(rate(node_cpu_seconds_total{mode=\"idle\"}[5m])))" }
+          ]
+        },
+        {
+          "id": 2,
+          "type": "stat",
+          "title": "Uso de memória do cluster",
+          "datasource": { "type": "prometheus" },
+          "gridPos": { "h": 6, "w": 6, "x": 6, "y": 0 },
+          "fieldConfig": { "defaults": { "unit": "percent", "min": 0, "max": 100 }, "overrides": [] },
+          "targets": [
+            { "refId": "A", "expr": "100 * (1 - sum(node_memory_MemAvailable_bytes) / sum(node_memory_MemTotal_bytes))" }
+          ]
+        },
+        {
+          "id": 3,
+          "type": "timeseries",
+          "title": "Taxa de requisições por ingress",
+          "datasource": { "type": "prometheus" },
+          "gridPos": { "h": 6, "w": 12, "x": 12, "y": 0 },
+          "fieldConfig": { "defaults": { "unit": "reqps" }, "overrides": [] },
+          "targets": [
+            { "refId": "A", "expr": "sum(rate(nginx_ingress_controller_requests[5m])) by (ingress)", "legendFormat": "{{ingress}}" }
+          ]
+        },
+        {
+          "id": 4,
+          "type": "timeseries",
+          "title": "Erros 5xx por ingress",
+          "datasource": { "type": "prometheus" },
+          "gridPos": { "h": 8, "w": 8, "x": 0, "y": 6 },
+          "fieldConfig": { "defaults": { "unit": "reqps" }, "overrides": [] },
+          "targets": [
+            { "refId": "A", "expr": "sum(rate(nginx_ingress_controller_requests{status=~\"5..\"}[5m])) by (ingress)", "legendFormat": "{{ingress}}" }
+          ]
+        },
+        {
+          "id": 5,
+          "type": "timeseries",
+          "title": "CPU por pod (togglemaster)",
+          "datasource": { "type": "prometheus" },
+          "gridPos": { "h": 8, "w": 8, "x": 8, "y": 6 },
+          "fieldConfig": { "defaults": { "unit": "short" }, "overrides": [] },
+          "targets": [
+            { "refId": "A", "expr": "sum(rate(container_cpu_usage_seconds_total{namespace=\"togglemaster\",container!=\"\"}[5m])) by (pod)", "legendFormat": "{{pod}}" }
+          ]
+        },
+        {
+          "id": 6,
+          "type": "timeseries",
+          "title": "Memória por pod (togglemaster)",
+          "datasource": { "type": "prometheus" },
+          "gridPos": { "h": 8, "w": 8, "x": 16, "y": 6 },
+          "fieldConfig": { "defaults": { "unit": "bytes" }, "overrides": [] },
+          "targets": [
+            { "refId": "A", "expr": "sum(container_memory_working_set_bytes{namespace=\"togglemaster\",container!=\"\"}) by (pod)", "legendFormat": "{{pod}}" }
+          ]
+        },
+        {
+          "id": 7,
+          "type": "logs",
+          "title": "Logs em tempo real (togglemaster)",
+          "datasource": { "type": "loki" },
+          "gridPos": { "h": 9, "w": 24, "x": 0, "y": 14 },
+          "options": { "showTime": true, "wrapLogMessage": true, "sortOrder": "Descending" },
+          "targets": [
+            { "refId": "A", "expr": "{namespace=\"togglemaster\"}" }
+          ]
+        }
+      ]
+    }

@@ -5,3 +5,4 @@ resources:
 - namespace.yaml
 - servicemonitor-ingress-nginx.yaml
 - servicemonitor-otel-collector.yaml
+- dashboard-togglemaster.yaml
