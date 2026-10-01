@@ -22,10 +22,10 @@ module "eks" {
   eks_managed_node_groups = {
     default = {
       subnet_ids     = module.vpc.private_subnets
-      instance_types = ["t3.medium"]
+      instance_types = ["t3.large"]
       min_size       = 1
       desired_size   = 2
-      max_size       = 3
+      max_size       = 4
     }
   }
 }
