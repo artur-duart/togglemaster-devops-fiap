@@ -6,6 +6,7 @@ WORKDIR /app
 
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
+RUN opentelemetry-bootstrap -a install
 
 RUN useradd -m appuser
 COPY --chown=appuser:appuser . .
@@ -14,4 +15,4 @@ USER appuser
 HEALTHCHECK --interval=30s --timeout=3s --retries=3 CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8003/health')"
 
 EXPOSE 8003
-CMD ["gunicorn", "--bind", "0.0.0.0:8003", "app:app"]
+CMD ["opentelemetry-instrument", "gunicorn", "--bind", "0.0.0.0:8003", "app:app"]
