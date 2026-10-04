@@ -17,6 +17,12 @@ spec:
           repository: otel/opentelemetry-collector-contrib
         command:
           name: otelcol-contrib
+        extraEnvs:
+          - name: NEW_RELIC_LICENSE_KEY
+            valueFrom:
+              secretKeyRef:
+                name: newrelic-license
+                key: license-key
         ports:
           prom-exporter:
             enabled: true
@@ -40,6 +46,10 @@ spec:
           exporters:
             prometheus:
               endpoint: 0.0.0.0:8889
+            otlp/newrelic:
+              endpoint: otlp.nr-data.net:4317
+              headers:
+                api-key: ${env:NEW_RELIC_LICENSE_KEY}
             debug: {}
           service:
             pipelines:
@@ -50,7 +60,7 @@ spec:
               traces:
                 receivers: [otlp]
                 processors: [memory_limiter, batch]
-                exporters: [debug]
+                exporters: [otlp/newrelic, debug]
               logs:
                 receivers: [otlp]
                 processors: [memory_limiter, batch]
