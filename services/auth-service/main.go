@@ -1,12 +1,15 @@
 package main
 
 import (
+	"context"
 	"database/sql"
 	_ "github.com/jackc/pgx/v4/stdlib"
 	"github.com/joho/godotenv"
 	"log"
 	"net/http"
 	"os"
+
+	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 )
 
 type App struct {
@@ -16,6 +19,13 @@ type App struct {
 
 func main() {
 	_ = godotenv.Load()
+
+	shutdownTracer, err := initTracer(context.Background())
+	if err != nil {
+		log.Printf("Tracing desabilitado: %v", err)
+	} else {
+		defer func() { _ = shutdownTracer(context.Background()) }()
+	}
 
 	port := os.Getenv("PORT")
 	if port == "" {
@@ -51,7 +61,7 @@ func main() {
 	mux.Handle("/admin/keys", app.masterKeyAuthMiddleware(http.HandlerFunc(app.createKeyHandler)))
 
 	log.Printf("Serviço de Autenticação (Go) rodando na porta %s", port)
-	if err := http.ListenAndServe(":"+port, mux); err != nil {
+	if err := http.ListenAndServe(":"+port, otelhttp.NewHandler(mux, "auth-service")); err != nil {
 		log.Fatal(err)
 	}
 }
