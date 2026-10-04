@@ -11,4 +11,4 @@ resources:
 images:
 - name: 376903139600.dkr.ecr.us-east-1.amazonaws.com/targeting-service
   newName: 376903139600.dkr.ecr.us-east-1.amazonaws.com/targeting-service
-  newTag: cc57cbfd86a0d34349908312ac56a1a7235028da
+  newTag: e62ee5c0b27795c90aad872d293460a84087346f
