@@ -35,6 +35,35 @@ spec:
           config:
             global:
               resolve_timeout: 5m
+            inhibit_rules:
+              - source_matchers:
+                  - severity = "emergency"
+                target_matchers:
+                  - severity =~ "critical|warning|info"
+                equal:
+                  - incident
+              - source_matchers:
+                  - severity = "critical"
+                target_matchers:
+                  - severity =~ "warning|info"
+                equal:
+                  - namespace
+                  - alertname
+              - source_matchers:
+                  - severity = "warning"
+                target_matchers:
+                  - severity = "info"
+                equal:
+                  - namespace
+                  - alertname
+              - source_matchers:
+                  - alertname = "InfoInhibitor"
+                target_matchers:
+                  - severity = "info"
+                equal:
+                  - namespace
+              - target_matchers:
+                  - alertname = "InfoInhibitor"
             route:
               group_by:
                 - alertname
@@ -51,36 +80,70 @@ spec:
                     - alertname = "InfoInhibitor"
                   receiver: "null"
                 - matchers:
+                    - severity = "info"
+                  receiver: "null"
+                - matchers:
                     - alertname =~ "ToggleMaster.*"
+                    - severity = "critical"
                   receiver: self-healing
                   group_wait: 10s
                   continue: true
                 - matchers:
-                    - severity = "critical"
+                    - severity = "emergency"
                   receiver: pagerduty
                   continue: true
+                - matchers:
+                    - severity = "emergency"
+                  receiver: discord-emergencia
                 - receiver: discord
             receivers:
               - name: "null"
+
               - name: self-healing
                 webhook_configs:
                   - url: http://self-healing-responder.observability.svc:8080/alert
                     send_resolved: false
+
               - name: pagerduty
                 pagerduty_configs:
-                  - routing_key_file: /etc/alertmanager/secrets/alertmanager-integrations/pagerduty-routing-key
-                    severity: critical
-                    description: '{{ .CommonLabels.alertname }} em {{ .CommonLabels.exported_job }}'
+                  - service_key_file: /etc/alertmanager/secrets/alertmanager-integrations/pagerduty-service-key
+                    description: '[N1] {{ .CommonLabels.alertname }} em {{ .CommonLabels.exported_job }}{{ .CommonLabels.pod }}'
                     details:
-                      servico: '{{ .CommonLabels.exported_job }}'
+                      servico: '{{ .CommonLabels.exported_job }}{{ .CommonLabels.pod }}'
                       namespace: '{{ .CommonLabels.namespace }}'
-                      descricao: '{{ .CommonAnnotations.description }}'
+                      resumo: '{{ .CommonAnnotations.summary }}'
+                      impacto: '{{ .CommonAnnotations.impacto }}'
+                      acao: '{{ .CommonAnnotations.acao }}'
+                      runbook: '{{ .CommonAnnotations.runbook_url }}'
+                      dashboard: '{{ .CommonAnnotations.dashboard_url }}'
                     send_resolved: true
+
+              - name: discord-emergencia
+                discord_configs:
+                  - webhook_url_file: /etc/alertmanager/secrets/alertmanager-integrations/discord-webhook-emergencia
+                    title: '{{ if eq .Status "firing" }}[N1 EMERGENCIA]{{ else }}[RESOLVIDO]{{ end }} {{ .CommonLabels.alertname }}'
+                    message: |-
+                      {{ .CommonAnnotations.summary }}
+
+                      Servico: {{ .CommonLabels.exported_job }}{{ .CommonLabels.pod }}
+                      Impacto: {{ .CommonAnnotations.impacto }}
+                      Acao: {{ .CommonAnnotations.acao }}
+                      Runbook: {{ .CommonAnnotations.runbook_url }}
+
+                      O plantonista foi acionado no PagerDuty porque a mitigacao automatica nao resolveu.
+                    send_resolved: true
+
               - name: discord
                 discord_configs:
-                  - webhook_url_file: /etc/alertmanager/secrets/alertmanager-integrations/discord-webhook-url
-                    title: '{{ if eq .Status "firing" }}[DISPAROU]{{ else }}[RESOLVIDO]{{ end }} {{ .CommonLabels.alertname }}'
-                    message: '{{ .CommonAnnotations.summary }}{{ if .CommonLabels.exported_job }} ({{ .CommonLabels.exported_job }}){{ end }}'
+                  - webhook_url_file: /etc/alertmanager/secrets/alertmanager-integrations/discord-webhook-geral
+                    title: '{{ if eq .Status "firing" }}[N{{ if .CommonLabels.nivel }}{{ .CommonLabels.nivel }}{{ else }}3{{ end }}]{{ else }}[RESOLVIDO]{{ end }} {{ .CommonLabels.alertname }}'
+                    message: |-
+                      {{ .CommonAnnotations.summary }}
+
+                      Servico: {{ .CommonLabels.exported_job }}{{ .CommonLabels.pod }}
+                      Impacto: {{ .CommonAnnotations.impacto }}
+                      Acao: {{ .CommonAnnotations.acao }}
+                      Runbook: {{ .CommonAnnotations.runbook_url }}
                     send_resolved: true
         grafana:
           resources:

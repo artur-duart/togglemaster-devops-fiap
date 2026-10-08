@@ -7,7 +7,7 @@ metadata:
     app.kubernetes.io/part-of: togglemaster-observability
 spec:
   groups:
-    - name: togglemaster.http
+    - name: togglemaster.taxa-de-erro
       rules:
         - alert: ToggleMasterHighErrorRate
           expr: |
@@ -15,20 +15,72 @@ spec:
             /
             sum by (exported_job) (rate(http_server_duration_milliseconds_count[5m]))
             > 0.05
-          for: 2m
+          for: 5m
           labels:
             severity: critical
+            nivel: "2"
             team: togglemaster
+            incident: togglemaster-taxa-de-erro
           annotations:
             summary: "Taxa de erros 5xx acima de 5% em {{ $labels.exported_job }}"
-            description: "O serviço {{ $labels.exported_job }} está com {{ $value | humanizePercentage }} de respostas 5xx nos últimos 5 minutos."
+            description: "{{ $labels.exported_job }} respondeu {{ $value | humanizePercentage }} de 5xx nos ultimos 5 minutos. A mitigacao automatica foi acionada."
+            impacto: "Requisicoes de avaliacao de feature flags estao falhando para os clientes deste servico."
+            acao: "O responder de self-healing reinicia o deployment. Se nao resolver, este alerta escala para o plantonista em 15 minutos."
+            runbook_url: "https://github.com/artur-duart/togglemaster-devops-fiap/blob/main/runbooks/togglemaster-high-error-rate.md"
+            dashboard_url: "https://grafana.togglemaster.local/d/togglemaster-overview"
+
+        - alert: ToggleMasterHighErrorRateSustained
+          expr: |
+            sum by (exported_job) (rate(http_server_duration_milliseconds_count{http_status_code=~"5.."}[5m]))
+            /
+            sum by (exported_job) (rate(http_server_duration_milliseconds_count[5m]))
+            > 0.05
+          for: 20m
+          labels:
+            severity: emergency
+            nivel: "1"
+            team: togglemaster
+            incident: togglemaster-taxa-de-erro
+          annotations:
+            summary: "Taxa de erros 5xx persiste ha 20 minutos em {{ $labels.exported_job }}"
+            description: "{{ $labels.exported_job }} segue com {{ $value | humanizePercentage }} de 5xx. A mitigacao automatica nao foi suficiente e o incidente exige intervencao humana."
+            impacto: "Degradacao sustentada do servico, alem do tempo previsto para remediacao automatica."
+            acao: "Siga o runbook a partir da Camada 3, porque a Camada 2 ja foi tentada e falhou."
+            runbook_url: "https://github.com/artur-duart/togglemaster-devops-fiap/blob/main/runbooks/togglemaster-high-error-rate.md"
+            dashboard_url: "https://grafana.togglemaster.local/d/togglemaster-overview"
+
+    - name: togglemaster.disponibilidade
+      rules:
         - alert: ToggleMasterServiceDown
           expr: |
             sum by (namespace, pod) (kube_pod_container_status_ready{namespace="togglemaster"}) == 0
           for: 2m
           labels:
             severity: critical
+            nivel: "2"
             team: togglemaster
+            incident: togglemaster-indisponibilidade
           annotations:
-            summary: "Pod sem réplica pronta em {{ $labels.pod }}"
-            description: "O pod {{ $labels.pod }} no namespace togglemaster está sem container pronto há mais de 2 minutos."
+            summary: "Pod sem replica pronta: {{ $labels.pod }}"
+            description: "O pod {{ $labels.pod }} no namespace togglemaster esta sem container pronto ha mais de 2 minutos."
+            impacto: "O servico correspondente esta indisponivel, nao apenas degradado."
+            acao: "O responder de self-healing reinicia o deployment. Se nao resolver, este alerta escala para o plantonista em 5 minutos."
+            runbook_url: "https://github.com/artur-duart/togglemaster-devops-fiap/blob/main/runbooks/togglemaster-service-down.md"
+            dashboard_url: "https://grafana.togglemaster.local/d/togglemaster-overview"
+
+        - alert: ToggleMasterServiceDownSustained
+          expr: |
+            sum by (namespace, pod) (kube_pod_container_status_ready{namespace="togglemaster"}) == 0
+          for: 7m
+          labels:
+            severity: emergency
+            nivel: "1"
+            team: togglemaster
+            incident: togglemaster-indisponibilidade
+          annotations:
+            summary: "Servico indisponivel ha 7 minutos: {{ $labels.pod }}"
+            description: "O pod {{ $labels.pod }} continua sem container pronto apos a tentativa de restart automatico."
+            impacto: "Indisponibilidade sustentada. O restart nao corrige imagem inexistente, Secret ausente nem erro de configuracao."
+            acao: "Siga o runbook a partir da Camada 3 e use a tabela de sintomas do describe para separar as causas."
+            runbook_url: "https://github.com/artur-duart/togglemaster-devops-fiap/blob/main/runbooks/togglemaster-service-down.md"
+            dashboard_url: "https://grafana.togglemaster.local/d/togglemaster-overview"
