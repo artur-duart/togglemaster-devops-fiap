@@ -12,4 +12,4 @@ resources:
 images:
 - name: 376903139600.dkr.ecr.us-east-1.amazonaws.com/analytics-service
   newName: 376903139600.dkr.ecr.us-east-1.amazonaws.com/analytics-service
-  newTag: e62ee5c0b27795c90aad872d293460a84087346f
+  newTag: ff0ca470acdea0d10432251e71a2239e44a09ef8
