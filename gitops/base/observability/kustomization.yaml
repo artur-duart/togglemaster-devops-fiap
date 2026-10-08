@@ -6,3 +6,6 @@ resources:
 - servicemonitor-ingress-nginx.yaml
 - servicemonitor-otel-collector.yaml
 - dashboard-togglemaster.yaml
+- prometheusrule-togglemaster.yaml
+- self-healing-code.yaml
+- self-healing-responder.yaml

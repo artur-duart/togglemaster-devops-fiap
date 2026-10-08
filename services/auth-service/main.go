@@ -20,11 +20,11 @@ type App struct {
 func main() {
 	_ = godotenv.Load()
 
-	shutdownTracer, err := initTracer(context.Background())
+	shutdownTelemetry, err := initTelemetry(context.Background())
 	if err != nil {
-		log.Printf("Tracing desabilitado: %v", err)
+		log.Printf("Telemetria desabilitada: %v", err)
 	} else {
-		defer func() { _ = shutdownTracer(context.Background()) }()
+		defer func() { _ = shutdownTelemetry(context.Background()) }()
 	}
 
 	port := os.Getenv("PORT")

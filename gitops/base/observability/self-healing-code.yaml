@@ -1,0 +1,136 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: self-healing-responder-code
+  namespace: observability
+  labels:
+    app.kubernetes.io/part-of: togglemaster-observability
+data:
+  responder.py: |
+    import json
+    import os
+    import ssl
+    import time
+    import urllib.request
+    from datetime import datetime, timezone
+    from http.server import BaseHTTPRequestHandler, HTTPServer
+
+    SA_DIR = "/var/run/secrets/kubernetes.io/serviceaccount"
+    API = "https://kubernetes.default.svc"
+    NAMESPACE = os.getenv("TARGET_NAMESPACE", "togglemaster")
+    COOLDOWN = int(os.getenv("COOLDOWN_SECONDS", "300"))
+
+    last_action = {}
+
+    def log(stage, **fields):
+        entry = {"ts": datetime.now(timezone.utc).isoformat(), "stage": stage}
+        entry.update(fields)
+        print(json.dumps(entry, ensure_ascii=False), flush=True)
+
+    def token():
+        with open(f"{SA_DIR}/token", encoding="utf-8") as handle:
+            return handle.read().strip()
+
+    def tls():
+        return ssl.create_default_context(cafile=f"{SA_DIR}/ca.crt")
+
+    def call(method, path, body=None):
+        request = urllib.request.Request(f"{API}{path}", method=method)
+        request.add_header("Authorization", f"Bearer {token()}")
+        if body is not None:
+            request.add_header("Content-Type", "application/strategic-merge-patch+json")
+            request.data = json.dumps(body).encode("utf-8")
+        with urllib.request.urlopen(request, context=tls(), timeout=10) as response:
+            return json.loads(response.read().decode("utf-8"))
+
+    def deployment_from(labels):
+        job = labels.get("exported_job", "")
+        if "/" in job:
+            return job.split("/", 1)[1]
+        if job:
+            return job
+        pod = labels.get("pod", "")
+        if pod:
+            parts = pod.split("-")
+            return "-".join(parts[:-2]) if len(parts) > 2 else pod
+        return labels.get("deployment", "")
+
+    def validate(name):
+        if not name:
+            return False, "nome do deployment nao identificado"
+        elapsed = time.time() - last_action.get(name, 0)
+        if elapsed < COOLDOWN:
+            return False, f"em cooldown ha {int(elapsed)}s de {COOLDOWN}s"
+        try:
+            deployment = call("GET", f"/apis/apps/v1/namespaces/{NAMESPACE}/deployments/{name}")
+        except Exception as error:
+            return False, f"deployment nao encontrado: {error}"
+        desired = deployment.get("spec", {}).get("replicas", 0)
+        if desired == 0:
+            return False, "deployment com 0 replicas desejadas, nada a reiniciar"
+        return True, f"ok, {desired} replica(s) desejada(s)"
+
+    def restart(name):
+        stamp = datetime.now(timezone.utc).isoformat()
+        patch = {"spec": {"template": {"metadata": {"annotations": {
+            "kubectl.kubernetes.io/restartedAt": stamp}}}}}
+        call("PATCH", f"/apis/apps/v1/namespaces/{NAMESPACE}/deployments/{name}", patch)
+        last_action[name] = time.time()
+        return stamp
+
+    def verify(name):
+        deployment = call("GET", f"/apis/apps/v1/namespaces/{NAMESPACE}/deployments/{name}")
+        status = deployment.get("status", {})
+        return {"replicas": status.get("replicas"), "updated": status.get("updatedReplicas"),
+                "ready": status.get("readyReplicas")}
+
+    def handle(payload):
+        for alert in payload.get("alerts", []):
+            if alert.get("status") != "firing":
+                continue
+            labels = alert.get("labels", {})
+            name = deployment_from(labels)
+            log("recebido", alert=labels.get("alertname"), target=name, severity=labels.get("severity"))
+
+            allowed, reason = validate(name)
+            if not allowed:
+                log("validacao_reprovada", target=name, motivo=reason)
+                continue
+            log("validacao_aprovada", target=name, detalhe=reason)
+
+            try:
+                stamp = restart(name)
+                log("acao_executada", target=name, acao="rollout restart", restartedAt=stamp)
+            except Exception as error:
+                log("acao_falhou", target=name, erro=str(error))
+                continue
+
+            time.sleep(5)
+            try:
+                log("verificacao", target=name, estado=verify(name))
+            except Exception as error:
+                log("verificacao_falhou", target=name, erro=str(error))
+
+    class Handler(BaseHTTPRequestHandler):
+        def do_POST(self):
+            length = int(self.headers.get("Content-Length", 0))
+            raw = self.rfile.read(length) if length else b"{}"
+            self.send_response(200)
+            self.end_headers()
+            self.wfile.write(b"ok")
+            try:
+                handle(json.loads(raw.decode("utf-8")))
+            except Exception as error:
+                log("payload_invalido", erro=str(error))
+
+        def do_GET(self):
+            self.send_response(200)
+            self.end_headers()
+            self.wfile.write(b"healthy")
+
+        def log_message(self, *args):
+            return
+
+    if __name__ == "__main__":
+        log("iniciado", namespace=NAMESPACE, cooldown=COOLDOWN)
+        HTTPServer(("", 8080), Handler).serve_forever()

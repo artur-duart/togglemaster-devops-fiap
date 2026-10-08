@@ -1,0 +1,34 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: togglemaster-slo
+  namespace: observability
+  labels:
+    app.kubernetes.io/part-of: togglemaster-observability
+spec:
+  groups:
+    - name: togglemaster.http
+      rules:
+        - alert: ToggleMasterHighErrorRate
+          expr: |
+            sum by (exported_job) (rate(http_server_duration_milliseconds_count{http_status_code=~"5.."}[5m]))
+            /
+            sum by (exported_job) (rate(http_server_duration_milliseconds_count[5m]))
+            > 0.05
+          for: 2m
+          labels:
+            severity: critical
+            team: togglemaster
+          annotations:
+            summary: "Taxa de erros 5xx acima de 5% em {{ $labels.exported_job }}"
+            description: "O serviço {{ $labels.exported_job }} está com {{ $value | humanizePercentage }} de respostas 5xx nos últimos 5 minutos."
+        - alert: ToggleMasterServiceDown
+          expr: |
+            sum by (namespace, pod) (kube_pod_container_status_ready{namespace="togglemaster"}) == 0
+          for: 2m
+          labels:
+            severity: critical
+            team: togglemaster
+          annotations:
+            summary: "Pod sem réplica pronta em {{ $labels.pod }}"
+            description: "O pod {{ $labels.pod }} no namespace togglemaster está sem container pronto há mais de 2 minutos."
