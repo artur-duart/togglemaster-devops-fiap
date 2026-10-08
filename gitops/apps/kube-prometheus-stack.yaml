@@ -16,6 +16,7 @@ spec:
             retention: 5d
             serviceMonitorSelectorNilUsesHelmValues: false
             podMonitorSelectorNilUsesHelmValues: false
+            ruleSelectorNilUsesHelmValues: false
             resources:
               requests:
                 cpu: 200m
