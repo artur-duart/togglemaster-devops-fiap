@@ -53,7 +53,9 @@ spec:
       rules:
         - alert: ToggleMasterServiceDown
           expr: |
-            sum by (namespace, pod) (kube_pod_container_status_ready{namespace="togglemaster"}) == 0
+            kube_deployment_status_replicas_available{namespace="togglemaster"} == 0
+            and
+            kube_deployment_spec_replicas{namespace="togglemaster"} > 0
           for: 2m
           labels:
             severity: critical
@@ -61,8 +63,8 @@ spec:
             team: togglemaster
             incident: togglemaster-indisponibilidade
           annotations:
-            summary: "Pod sem replica pronta: {{ $labels.pod }}"
-            description: "O pod {{ $labels.pod }} no namespace togglemaster esta sem container pronto ha mais de 2 minutos."
+            summary: "Servico sem replica pronta: {{ $labels.deployment }}"
+            description: "O deployment {{ $labels.deployment }} deveria ter replicas mas nenhuma esta pronta ha mais de 2 minutos."
             impacto: "O servico correspondente esta indisponivel, nao apenas degradado."
             acao: "O responder de self-healing reinicia o deployment. Se nao resolver, este alerta escala para o plantonista em 5 minutos."
             runbook_url: "https://github.com/artur-duart/togglemaster-devops-fiap/blob/main/runbooks/togglemaster-service-down.md"
@@ -70,7 +72,9 @@ spec:
 
         - alert: ToggleMasterServiceDownSustained
           expr: |
-            sum by (namespace, pod) (kube_pod_container_status_ready{namespace="togglemaster"}) == 0
+            kube_deployment_status_replicas_available{namespace="togglemaster"} == 0
+            and
+            kube_deployment_spec_replicas{namespace="togglemaster"} > 0
           for: 7m
           labels:
             severity: emergency
@@ -78,8 +82,8 @@ spec:
             team: togglemaster
             incident: togglemaster-indisponibilidade
           annotations:
-            summary: "Servico indisponivel ha 7 minutos: {{ $labels.pod }}"
-            description: "O pod {{ $labels.pod }} continua sem container pronto apos a tentativa de restart automatico."
+            summary: "Servico indisponivel ha 7 minutos: {{ $labels.deployment }}"
+            description: "O deployment {{ $labels.deployment }} continua sem replica pronta apos a tentativa de restart automatico."
             impacto: "Indisponibilidade sustentada. O restart nao corrige imagem inexistente, Secret ausente nem erro de configuracao."
             acao: "Siga o runbook a partir da Camada 3 e use a tabela de sintomas do describe para separar as causas."
             runbook_url: "https://github.com/artur-duart/togglemaster-devops-fiap/blob/main/runbooks/togglemaster-service-down.md"

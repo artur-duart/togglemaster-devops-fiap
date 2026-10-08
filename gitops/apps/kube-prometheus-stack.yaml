@@ -69,6 +69,7 @@ spec:
               group_by:
                 - alertname
                 - exported_job
+                - deployment
               group_wait: 30s
               group_interval: 5m
               repeat_interval: 4h
@@ -108,9 +109,9 @@ spec:
               - name: pagerduty
                 pagerduty_configs:
                   - service_key_file: /etc/alertmanager/secrets/alertmanager-integrations/pagerduty-service-key
-                    description: '[N1] {{ .CommonLabels.alertname }} em {{ .CommonLabels.exported_job }}{{ .CommonLabels.pod }}'
+                    description: '[N1] {{ .CommonLabels.alertname }} em {{ .CommonLabels.exported_job }}{{ .CommonLabels.deployment }}'
                     details:
-                      servico: '{{ .CommonLabels.exported_job }}{{ .CommonLabels.pod }}'
+                      servico: '{{ .CommonLabels.exported_job }}{{ .CommonLabels.deployment }}'
                       namespace: '{{ .CommonLabels.namespace }}'
                       resumo: '{{ .CommonAnnotations.summary }}'
                       impacto: '{{ .CommonAnnotations.impacto }}'
@@ -126,7 +127,7 @@ spec:
                     message: |-
                       {{ .CommonAnnotations.summary }}
 
-                      Servico: {{ .CommonLabels.exported_job }}{{ .CommonLabels.pod }}
+                      Servico: {{ .CommonLabels.exported_job }}{{ .CommonLabels.deployment }}
                       Impacto: {{ .CommonAnnotations.impacto }}
                       Acao: {{ .CommonAnnotations.acao }}
                       Runbook: {{ .CommonAnnotations.runbook_url }}
@@ -141,7 +142,7 @@ spec:
                     message: |-
                       {{ .CommonAnnotations.summary }}
 
-                      Servico: {{ .CommonLabels.exported_job }}{{ .CommonLabels.pod }}
+                      Servico: {{ .CommonLabels.exported_job }}{{ .CommonLabels.deployment }}
                       Impacto: {{ .CommonAnnotations.impacto }}
                       Acao: {{ .CommonAnnotations.acao }}
                       Runbook: {{ .CommonAnnotations.runbook_url }}
