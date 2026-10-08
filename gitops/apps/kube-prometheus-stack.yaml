@@ -24,12 +24,64 @@ spec:
                 memory: 1Gi
         alertmanager:
           alertmanagerSpec:
+            secrets:
+              - alertmanager-integrations
             resources:
               requests:
                 cpu: 25m
                 memory: 64Mi
               limits:
                 memory: 128Mi
+          config:
+            global:
+              resolve_timeout: 5m
+            route:
+              group_by:
+                - alertname
+                - exported_job
+              group_wait: 30s
+              group_interval: 5m
+              repeat_interval: 4h
+              receiver: discord
+              routes:
+                - matchers:
+                    - alertname = "Watchdog"
+                  receiver: "null"
+                - matchers:
+                    - alertname = "InfoInhibitor"
+                  receiver: "null"
+                - matchers:
+                    - alertname =~ "ToggleMaster.*"
+                  receiver: self-healing
+                  group_wait: 10s
+                  continue: true
+                - matchers:
+                    - severity = "critical"
+                  receiver: pagerduty
+                  continue: true
+                - receiver: discord
+            receivers:
+              - name: "null"
+              - name: self-healing
+                webhook_configs:
+                  - url: http://self-healing-responder.observability.svc:8080/alert
+                    send_resolved: false
+              - name: pagerduty
+                pagerduty_configs:
+                  - routing_key_file: /etc/alertmanager/secrets/alertmanager-integrations/pagerduty-routing-key
+                    severity: critical
+                    description: '{{ .CommonLabels.alertname }} em {{ .CommonLabels.exported_job }}'
+                    details:
+                      servico: '{{ .CommonLabels.exported_job }}'
+                      namespace: '{{ .CommonLabels.namespace }}'
+                      descricao: '{{ .CommonAnnotations.description }}'
+                    send_resolved: true
+              - name: discord
+                discord_configs:
+                  - webhook_url_file: /etc/alertmanager/secrets/alertmanager-integrations/discord-webhook-url
+                    title: '{{ if eq .Status "firing" }}[DISPAROU]{{ else }}[RESOLVIDO]{{ end }} {{ .CommonLabels.alertname }}'
+                    message: '{{ .CommonAnnotations.summary }}{{ if .CommonLabels.exported_job }} ({{ .CommonLabels.exported_job }}){{ end }}'
+                    send_resolved: true
         grafana:
           resources:
             requests:
