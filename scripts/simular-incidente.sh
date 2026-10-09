@@ -51,8 +51,8 @@ o restart automatico NAO resolve, e por isso o alerta escala para o plantonista.
 
 Linha do tempo esperada:
   T+0      Secret removido e pods em execucao apagados
-  T+2min   ToggleMasterServiceDown (Nivel 2) -> responder + Discord geral
-  T+7min   ToggleMasterServiceDownSustained (Nivel 1) -> PagerDuty + Discord emergencia
+  ~T+3min  ToggleMasterServiceDown (Nivel 2) -> responder + Discord geral
+  ~T+8min  ToggleMasterServiceDownSustained (Nivel 1) -> PagerDuty + Discord emergencia
   ao sair  Secret recriado e servico de volta (automatico, inclusive com Ctrl+C)
 
 EOF
@@ -93,13 +93,13 @@ acompanhar() {
   printf '\r%*s\r' 80 ''
 }
 
-acompanhar 150 "ToggleMasterServiceDown (Nivel 2)"
-marco "T+2min30s  O alerta de Nivel 2 ja deve ter disparado"
+acompanhar 210 "ToggleMasterServiceDown (Nivel 2)"
+marco "T+3min30s  O alerta de Nivel 2 ja deve ter chegado"
 info "confira o canal GERAL do Discord"
 info "o PagerDuty deve seguir SILENCIOSO, de proposito"
 
-acompanhar 480 "ToggleMasterServiceDownSustained (Nivel 1)"
-marco "T+8min  O alerta de Nivel 1 ja deve ter escalado"
+acompanhar 570 "ToggleMasterServiceDownSustained (Nivel 1)"
+marco "T+9min30s  O alerta de Nivel 1 ja deve ter escalado"
 info "confira o PagerDuty e o canal de EMERGENCIA do Discord"
 info "repare que o responder tentou o restart e o pod continuou falhando:"
 kubectl -n "$NS" get pods -l app="$SVC" 2>/dev/null || true
