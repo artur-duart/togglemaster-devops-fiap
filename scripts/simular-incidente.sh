@@ -42,11 +42,15 @@ kubectl -n "$OBS_NS" get deploy/self-healing-responder >/dev/null 2>&1 || die "o
 cat <<EOF
 
 Este script provoca um incidente REAL em $SVC removendo o Secret $SECRET.
-O pod nao consegue subir sem ele, o que e o cenario de falha de configuracao:
+Os pods sao apagados para que os recriados nascam sem ele. Apenas remover o
+Secret nao basta: o pod em execucao ja tem as variaveis injetadas, e o rolling
+update nunca o derruba enquanto o substituto nao fica pronto.
+
+Esse e o cenario de falha de configuracao:
 o restart automatico NAO resolve, e por isso o alerta escala para o plantonista.
 
 Linha do tempo esperada:
-  T+0      Secret removido e deploy reiniciado
+  T+0      Secret removido e pods em execucao apagados
   T+2min   ToggleMasterServiceDown (Nivel 2) -> responder + Discord geral
   T+7min   ToggleMasterServiceDownSustained (Nivel 1) -> PagerDuty + Discord emergencia
   ao sair  Secret recriado e servico de volta (automatico, inclusive com Ctrl+C)
@@ -70,7 +74,7 @@ info "backup em $BACKUP ($(wc -l < "$BACKUP") linhas)"
 
 step "Provocando a falha"
 kubectl -n "$NS" delete "secret/$SECRET" >/dev/null && info "secret $SECRET removido"
-kubectl -n "$NS" rollout restart "deploy/$SVC" >/dev/null && info "deploy/$SVC reiniciado"
+kubectl -n "$NS" delete pods -l app="$SVC" --wait=false >/dev/null && info "pods de $SVC removidos; os recriados nascem sem o Secret"
 INICIO="$(date +%s)"
 
 kubectl -n "$OBS_NS" logs -f deploy/self-healing-responder --tail=0 2>/dev/null \
