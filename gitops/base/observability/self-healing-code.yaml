@@ -44,6 +44,9 @@ data:
             return json.loads(response.read().decode("utf-8"))
 
     def deployment_from(labels):
+        name = labels.get("deployment", "")
+        if name:
+            return name
         job = labels.get("exported_job", "")
         if "/" in job:
             return job.split("/", 1)[1]
@@ -53,7 +56,7 @@ data:
         if pod:
             parts = pod.split("-")
             return "-".join(parts[:-2]) if len(parts) > 2 else pod
-        return labels.get("deployment", "")
+        return ""
 
     def validate(name):
         if not name:
