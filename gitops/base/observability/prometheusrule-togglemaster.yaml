@@ -11,9 +11,17 @@ spec:
       rules:
         - alert: ToggleMasterHighErrorRate
           expr: |
-            sum by (exported_job) (rate(http_server_duration_milliseconds_count{http_status_code=~"5.."}[5m]))
+            sum by (exported_job) (
+              rate(http_server_duration_milliseconds_count{http_status_code=~"5.."}[5m])
+              or
+              rate(http_server_request_duration_seconds_count{http_response_status_code=~"5.."}[5m])
+            )
             /
-            sum by (exported_job) (rate(http_server_duration_milliseconds_count[5m]))
+            sum by (exported_job) (
+              rate(http_server_duration_milliseconds_count[5m])
+              or
+              rate(http_server_request_duration_seconds_count[5m])
+            )
             > 0.05
           for: 5m
           labels:
@@ -31,9 +39,17 @@ spec:
 
         - alert: ToggleMasterHighErrorRateSustained
           expr: |
-            sum by (exported_job) (rate(http_server_duration_milliseconds_count{http_status_code=~"5.."}[5m]))
+            sum by (exported_job) (
+              rate(http_server_duration_milliseconds_count{http_status_code=~"5.."}[5m])
+              or
+              rate(http_server_request_duration_seconds_count{http_response_status_code=~"5.."}[5m])
+            )
             /
-            sum by (exported_job) (rate(http_server_duration_milliseconds_count[5m]))
+            sum by (exported_job) (
+              rate(http_server_duration_milliseconds_count[5m])
+              or
+              rate(http_server_request_duration_seconds_count[5m])
+            )
             > 0.05
           for: 20m
           labels:
@@ -53,9 +69,9 @@ spec:
       rules:
         - alert: ToggleMasterServiceDown
           expr: |
-            kube_deployment_status_replicas_available{namespace="togglemaster"} == 0
+            sum by (namespace, deployment) (kube_deployment_status_replicas_available{namespace="togglemaster"}) == 0
             and
-            kube_deployment_spec_replicas{namespace="togglemaster"} > 0
+            sum by (namespace, deployment) (kube_deployment_spec_replicas{namespace="togglemaster"}) > 0
           for: 2m
           labels:
             severity: critical
@@ -72,9 +88,9 @@ spec:
 
         - alert: ToggleMasterServiceDownSustained
           expr: |
-            kube_deployment_status_replicas_available{namespace="togglemaster"} == 0
+            sum by (namespace, deployment) (kube_deployment_status_replicas_available{namespace="togglemaster"}) == 0
             and
-            kube_deployment_spec_replicas{namespace="togglemaster"} > 0
+            sum by (namespace, deployment) (kube_deployment_spec_replicas{namespace="togglemaster"}) > 0
           for: 7m
           labels:
             severity: emergency

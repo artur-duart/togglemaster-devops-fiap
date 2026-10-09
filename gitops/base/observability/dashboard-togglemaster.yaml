@@ -97,7 +97,7 @@ data:
           "targets": [
             {
               "refId": "A",
-              "expr": "sum(rate(http_server_duration_milliseconds_count[5m])) by (exported_job)",
+              "expr": "sum by (exported_job) (rate(http_server_duration_milliseconds_count[5m]) or rate(http_server_request_duration_seconds_count[5m]))",
               "legendFormat": "{{exported_job}}"
             }
           ]
@@ -124,8 +124,13 @@ data:
           "targets": [
             {
               "refId": "A",
-              "expr": "sum(rate(http_server_duration_milliseconds_count{http_status_code=~\"4..|5..\"}[5m])) by (exported_job, http_status_code)",
+              "expr": "sum by (exported_job, http_status_code) (rate(http_server_duration_milliseconds_count{http_status_code=~\"4..|5..\"}[5m]))",
               "legendFormat": "{{exported_job}} {{http_status_code}}"
+            },
+            {
+              "refId": "B",
+              "expr": "sum by (exported_job, http_response_status_code) (rate(http_server_request_duration_seconds_count{http_response_status_code=~\"4..|5..\"}[5m]))",
+              "legendFormat": "{{exported_job}} {{http_response_status_code}}"
             }
           ]
         },
