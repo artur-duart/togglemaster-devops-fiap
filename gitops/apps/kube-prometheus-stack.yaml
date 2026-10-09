@@ -38,6 +38,10 @@ spec:
               resolve_timeout: 5m
             inhibit_rules:
               - source_matchers:
+                  - alertname =~ "ToggleMasterServiceDown.*"
+                target_matchers:
+                  - alertname =~ "ToggleMasterHighErrorRate.*"
+              - source_matchers:
                   - severity = "emergency"
                 target_matchers:
                   - severity =~ "critical|warning|info"
