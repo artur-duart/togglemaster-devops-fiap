@@ -23,6 +23,10 @@ spec:
                 memory: 512Mi
               limits:
                 memory: 1Gi
+        kubeControllerManager:
+          enabled: false
+        kubeScheduler:
+          enabled: false
         alertmanager:
           alertmanagerSpec:
             secrets:
