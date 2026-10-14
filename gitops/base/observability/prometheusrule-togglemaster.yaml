@@ -73,6 +73,7 @@ spec:
             and
             sum by (namespace, deployment) (kube_deployment_spec_replicas{namespace="togglemaster"}) > 0
           for: 2m
+          keep_firing_for: 6m
           labels:
             severity: critical
             nivel: "2"
