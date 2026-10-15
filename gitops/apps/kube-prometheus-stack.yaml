@@ -45,6 +45,8 @@ spec:
                   - alertname =~ "ToggleMasterServiceDown.*"
                 target_matchers:
                   - alertname =~ "ToggleMasterHighErrorRate.*"
+                equal:
+                  - nivel
               - source_matchers:
                   - severity = "emergency"
                 target_matchers:
