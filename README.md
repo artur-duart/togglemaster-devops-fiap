@@ -1,19 +1,22 @@
 <div align="center">
 
-# 🚀 ToggleMaster — DevOps & Cloud Architecture Journey
+# 🚀 ToggleMaster · DevOps & Cloud Architecture Journey
 
-**Plataforma de Feature Flags · Fase 3: Infraestrutura como Código, CI/CD DevSecOps e GitOps**
+**Plataforma de Feature Flags · Fase 4: Observabilidade Total e Resposta Ativa**
 
-![Terraform](https://img.shields.io/badge/Terraform-7B42BC?style=flat-square&logo=terraform&logoColor=white)
-![AWS EKS](https://img.shields.io/badge/AWS_EKS-FF9900?style=flat-square&logo=amazonaws&logoColor=white)
-![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=flat-square&logo=githubactions&logoColor=white)
+![OpenTelemetry](https://img.shields.io/badge/OpenTelemetry-000000?style=flat-square&logo=opentelemetry&logoColor=white)
+![Prometheus](https://img.shields.io/badge/Prometheus-E6522C?style=flat-square&logo=prometheus&logoColor=white)
+![Grafana](https://img.shields.io/badge/Grafana-F46800?style=flat-square&logo=grafana&logoColor=white)
+![Loki](https://img.shields.io/badge/Loki-F2CC0C?style=flat-square&logo=grafana&logoColor=black)
+![New Relic](https://img.shields.io/badge/New_Relic-1CE783?style=flat-square&logo=newrelic&logoColor=black)
+![PagerDuty](https://img.shields.io/badge/PagerDuty-06AC38?style=flat-square&logo=pagerduty&logoColor=white)
+![Discord](https://img.shields.io/badge/Discord-5865F2?style=flat-square&logo=discord&logoColor=white)
 ![ArgoCD](https://img.shields.io/badge/Argo_CD-EF7B4D?style=flat-square&logo=argo&logoColor=white)
-![Trivy](https://img.shields.io/badge/Trivy-1904DA?style=flat-square&logo=aqua&logoColor=white)
-![Kustomize](https://img.shields.io/badge/Kustomize-326CE5?style=flat-square&logo=kubernetes&logoColor=white)
+![Terraform](https://img.shields.io/badge/Terraform-7B42BC?style=flat-square&logo=terraform&logoColor=white)
 ![Go](https://img.shields.io/badge/Go-00ADD8?style=flat-square&logo=go&logoColor=white)
 ![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
 ![FIAP](https://img.shields.io/badge/POSTECH-FIAP-ED145B?style=flat-square)
-![Version](https://img.shields.io/badge/version-v3.0.0--fase3-blueviolet?style=flat-square)
+![Version](https://img.shields.io/badge/version-v4.0.0--fase4-blueviolet?style=flat-square)
 
 </div>
 
@@ -21,40 +24,40 @@
 
 ## 📑 Índice
 
-- [🚀 ToggleMaster — DevOps \& Cloud Architecture Journey](#-togglemaster--devops--cloud-architecture-journey)
-  - [📑 Índice](#-índice)
-  - [🛤 Sobre o Projeto (Visão Evolutiva)](#-sobre-o-projeto-visão-evolutiva)
-  - [🎯 O Desafio da Fase 3](#-o-desafio-da-fase-3)
-  - [🏗 Arquitetura da Solução](#-arquitetura-da-solução)
-    - [Arquitetura da aplicação](#arquitetura-da-aplicação)
-    - [Fluxo DevOps: do commit ao cluster (CI + GitOps)](#fluxo-devops-do-commit-ao-cluster-ci--gitops)
-  - [🧩 Os 5 Microsserviços](#-os-5-microsserviços)
-  - [🟣 Requisito 1 — Infraestrutura como Código (Terraform)](#-requisito-1--infraestrutura-como-código-terraform)
-    - [O que foi provisionado](#o-que-foi-provisionado)
-    - [Decisões de arquitetura que valem destacar](#decisões-de-arquitetura-que-valem-destacar)
-  - [🟢 Requisito 2 — Pipeline de CI e DevSecOps](#-requisito-2--pipeline-de-ci-e-devsecops)
-    - [Os estágios do pipeline](#os-estágios-do-pipeline)
-    - [Autenticação sem chave estática (OIDC)](#autenticação-sem-chave-estática-oidc)
-    - [A regra de bloqueio provada duas vezes](#a-regra-de-bloqueio-provada-duas-vezes)
-  - [🟠 Requisito 3 — Entrega Contínua e GitOps](#-requisito-3--entrega-contínua-e-gitops)
-    - [Estrutura do repositório de GitOps](#estrutura-do-repositório-de-gitops)
-    - [O loop fechado, provado no cluster](#o-loop-fechado-provado-no-cluster)
-    - [Detalhes que mostram domínio](#detalhes-que-mostram-domínio)
-  - [🔒 Segurança e Modelagem de Ameaças](#-segurança-e-modelagem-de-ameaças)
-  - [✅ Rastreabilidade dos Requisitos](#-rastreabilidade-dos-requisitos)
-    - [Requisito 1 — IaC](#requisito-1--iac)
-    - [Requisito 2 — CI \& DevSecOps](#requisito-2--ci--devsecops)
-    - [Requisito 3 — CD \& GitOps](#requisito-3--cd--gitops)
-  - [🚀 Como Reproduzir do Zero](#-como-reproduzir-do-zero)
-    - [1. Provisionar a infraestrutura](#1-provisionar-a-infraestrutura)
-    - [2. Injetar os segredos e a configuração de ambiente](#2-injetar-os-segredos-e-a-configuração-de-ambiente)
-    - [3. Fazer o bootstrap do GitOps](#3-fazer-o-bootstrap-do-gitops)
-    - [4. Derrubar o ambiente (disciplina de custo)](#4-derrubar-o-ambiente-disciplina-de-custo)
-  - [🚧 Desafios e Decisões Técnicas](#-desafios-e-decisões-técnicas)
-  - [💰 Disciplina de Custo (FinOps)](#-disciplina-de-custo-finops)
-  - [📦 Entregáveis da Fase 3](#-entregáveis-da-fase-3)
-  - [🏷 Versionamento](#-versionamento)
-  - [👤 Autor](#-autor)
+- [🛤 Sobre o Projeto (Visão Evolutiva)](#-sobre-o-projeto-visão-evolutiva)
+- [🎯 O Desafio da Fase 4](#-o-desafio-da-fase-4)
+- [🏗 Arquitetura da Solução](#-arquitetura-da-solução)
+  - [O caminho da telemetria](#o-caminho-da-telemetria)
+  - [A cadeia de resposta a incidentes](#a-cadeia-de-resposta-a-incidentes)
+- [🧩 Os 5 Microsserviços](#-os-5-microsserviços)
+- [🟠 Requisito 1 · Stack de Monitoramento Open Source](#-requisito-1--stack-de-monitoramento-open-source)
+- [🟡 Requisito 2 · OpenTelemetry Collector](#-requisito-2--opentelemetry-collector)
+- [🟢 Requisito 3 · Instrumentação e APM (New Relic)](#-requisito-3--instrumentação-e-apm-new-relic)
+  - [Serviços em Python](#serviços-em-python)
+  - [Serviços em Go](#serviços-em-go)
+  - [O resultado no New Relic](#o-resultado-no-new-relic)
+- [🔴 Requisito 4 · Alertas, Incidente, ChatOps e Self-Healing](#-requisito-4--alertas-incidente-chatops-e-self-healing)
+  - [Alertas por nível de severidade](#alertas-por-nível-de-severidade)
+  - [Roteamento e inibição no Alertmanager](#roteamento-e-inibição-no-alertmanager)
+  - [Incidente e ChatOps](#incidente-e-chatops)
+  - [Self-healing](#self-healing)
+  - [A prova real](#a-prova-real)
+- [🧭 Justificativa Técnica das Escolhas](#-justificativa-técnica-das-escolhas)
+- [✅ Rastreabilidade dos Requisitos](#-rastreabilidade-dos-requisitos)
+  - [Código-fonte no repositório](#código-fonte-no-repositório)
+  - [Vídeo de demonstração](#vídeo-de-demonstração)
+  - [Relatório de entrega](#relatório-de-entrega)
+- [🚀 Como Reproduzir do Zero](#-como-reproduzir-do-zero)
+  - [1. Recursos persistentes (uma única vez)](#1-recursos-persistentes-uma-única-vez)
+  - [2. Infraestrutura do ambiente](#2-infraestrutura-do-ambiente)
+  - [3. Segredos e bootstrap](#3-segredos-e-bootstrap)
+  - [4. Ensaiar e provocar o incidente](#4-ensaiar-e-provocar-o-incidente)
+  - [5. Derrubar o ambiente](#5-derrubar-o-ambiente)
+- [🚧 Desafios e Decisões Técnicas](#-desafios-e-decisões-técnicas)
+- [💰 Disciplina de Custo (FinOps)](#-disciplina-de-custo-finops)
+- [📦 Entregáveis da Fase 4](#-entregáveis-da-fase-4)
+- [🏷 Versionamento](#-versionamento)
+- [👤 Autor](#-autor)
 
 ---
 
@@ -63,325 +66,377 @@
 Para espelhar cenários reais da indústria, o ToggleMaster evolui em fases, mantidas no mesmo repositório e marcadas com Git Tags:
 
 - ✅ **`v1.0.0-fase1`:** MVP monolítico (Python/Flask) em EC2 com RDS privado.
-- ✅ **`v2.0.0-fase2`:** reescrita em 5 microsserviços conteinerizados, orquestrados em Kubernetes (AWS EKS), com escalabilidade automática. A infraestrutura foi provisionada de forma **manual/imperativa** e o deploy usava `kubectl apply` direto.
-- 🔵 **`v3.0.0-fase3` `[ATUAL]`:** a mesma plataforma, agora **100% como código e automação**. Toda a infraestrutura vira Terraform, cada serviço ganha um pipeline de CI com portões de segurança (DevSecOps), e o deploy passa a ser declarativo via GitOps com ArgoCD.
+- ✅ **`v2.0.0-fase2`:** reescrita em 5 microsserviços conteinerizados, orquestrados no Amazon EKS, com escalabilidade automática.
+- ✅ **`v3.0.0-fase3`:** a mesma plataforma 100% como código: infraestrutura em Terraform, CI com portões de segurança (DevSecOps) e entrega declarativa via GitOps com ArgoCD.
+- 🔵 **`v4.0.0-fase4` `[ATUAL]`:** a plataforma ganha **visibilidade e capacidade de reação**. Métricas, logs e traces coletados pelo OpenTelemetry, um APM com tracing distribuído, e uma cadeia de resposta que transforma um alerta em incidente, avisa a equipe e aciona uma automação capaz de corrigir o problema sozinha.
 
-> A Fase 3 não muda o que a aplicação faz. Ela transforma **como** a plataforma é construída, verificada e entregue: da criação manual para a Infraestrutura como Código, do deploy imperativo para o GitOps, e da confiança implícita para portões de segurança automatizados.
+> A Fase 4 é aditiva: toda a base das fases anteriores continua de pé (Terraform, pipelines DevSecOps, GitOps com ArgoCD) e é justamente por ela que a nova stack chega ao cluster. Nada da observabilidade foi instalado à mão.
 
 ---
 
-## 🎯 O Desafio da Fase 3
+## 🎯 O Desafio da Fase 4
 
-O enunciado pede três transformações sobre a plataforma da Fase 2:
+O enunciado parte de um problema concreto: a plataforma funciona, mas quando algo quebra a equipe descobre pelo cliente. Ele pede quatro entregas:
 
-1. **Substituir a criação manual por Terraform**, com um projeto organizado em módulos, provisionando rede, EKS, bancos, mensageria e registries, com o estado remoto no S3.
-2. **Criar pipelines de CI com DevSecOps** para os 5 microsserviços, com build, testes, lint, análise estática (SAST), análise de dependências (SCA) e scan de imagem, bloqueando em vulnerabilidade crítica, e publicando no ECR com a tag do commit.
-3. **Adotar GitOps**, abandonando o push direto: os manifestos vão para um diretório versionado, o ArgoCD é instalado no cluster, o CI atualiza a tag da imagem no Git, e o ArgoCD sincroniza automaticamente.
-
-> **Nota sobre a modalidade.** O projeto foi desenvolvido na **Opção B (conta pessoal AWS)**, que dá acesso completo ao IAM. Por isso, no lugar da `LabRole` da AWS Academy (Opção A), foram provisionadas **roles de IAM reais e de menor privilégio** (OIDC para o CI e IRSA para os pods), como detalhado adiante.
+1. **Stack de monitoramento open source** no cluster, via GitOps: Prometheus para métricas, Loki para logs e Grafana para visualização, com pelo menos um dashboard customizado.
+2. **OpenTelemetry Collector** como peça central, recebendo a telemetria das aplicações e roteando cada sinal ao seu destino.
+3. **Instrumentação das aplicações** com OpenTelemetry e um **APM comercial** (Datadog ou New Relic) exibindo o Service Map e traces distribuídos.
+4. **Resposta ativa a incidentes:** alertas inteligentes, abertura de incidente (PagerDuty ou OpsGenie), notificação em ChatOps (Slack, Discord ou Teams) e uma automação de **self-healing** que execute a ação corretiva.
 
 ---
 
 ## 🏗 Arquitetura da Solução
 
-### Arquitetura da aplicação
+### O caminho da telemetria
 
 ```mermaid
 flowchart LR
-    Client([Cliente / App]) -->|HTTP| ING[Nginx Ingress<br/>+ Load Balancer AWS]
-
-    ING -->|/auth| AUTH[auth-service<br/>Go · 8001]
-    ING -->|/flags| FLAG[flag-service<br/>Python · 8002]
-    ING -->|/targeting| TGT[targeting-service<br/>Python · 8003]
-    ING -->|/evaluate| EVAL[evaluation-service<br/>Go · 8004]
-    ING -->|/analytics| ANL[analytics-service<br/>Python · 8005]
-
-    AUTH --> RDSa[(RDS PostgreSQL<br/>auth)]
-    FLAG --> RDSf[(RDS PostgreSQL<br/>flag)]
-    TGT --> RDSt[(RDS PostgreSQL<br/>targeting)]
-
-    EVAL -->|cache| REDIS[(ElastiCache Redis)]
-    EVAL -.valida chave.-> AUTH
-    EVAL -.consulta flag.-> FLAG
-    EVAL -.consulta regra.-> TGT
-    EVAL ==>|produz evento| SQS[[SQS + DLQ]]
-    SQS ==>|consome| ANL
-    ANL --> DDB[(DynamoDB)]
-```
-
-### Fluxo DevOps: do commit ao cluster (CI + GitOps)
-
-```mermaid
-flowchart LR
-    DEV([Push / Pull Request]) --> GHA[GitHub Actions]
-
-    subgraph CI [Pipeline DevSecOps por serviço]
-      B[Build & Test] --> L[Lint] --> S[SAST + SCA<br/>bloqueia CRÍTICO] --> IMG[Docker Build<br/>+ Scan de imagem]
+    subgraph APPS [5 microsserviços instrumentados]
+      GO[auth · evaluation<br/>Go · SDK OTel]
+      PY[flag · targeting · analytics<br/>Python · auto-instrumentação]
     end
 
-    GHA --> CI
-    IMG -->|push tag :commit-sha<br/>via OIDC| ECR[(Amazon ECR)]
-    IMG -->|update-manifest:<br/>escreve a tag no Git| GITOPS[[pasta gitops/]]
+    GO -->|OTLP/HTTP :4318| COL
+    PY -->|OTLP/HTTP :4318| COL
+    COL[OpenTelemetry Collector<br/>receivers → processors → exporters]
 
-    GITOPS -->|pull| ARGO[ArgoCD no EKS]
-    ARGO -->|reconcilia| EKS[(Cluster EKS)]
-    ECR -.imagem puxada.-> EKS
+    COL -->|métricas| PROM[(Prometheus)]
+    COL -->|métricas + traces| NR[New Relic APM]
+
+    PODS([stdout dos containers]) --> ALLOY[Grafana Alloy<br/>DaemonSet]
+    ALLOY -->|logs| LOKI[(Loki)]
+
+    PROM --> GRAF[Grafana<br/>dashboard customizado]
+    LOKI --> GRAF
 ```
 
-> A esteira nunca faz `kubectl apply`: o CI só publica a imagem e **escreve a nova tag no Git**. O ArgoCD, que vive dentro do cluster, detecta a mudança e reconcilia. Esse modelo *pull-based* mantém a credencial de alto privilégio dentro do cluster e torna o Git a única fonte de verdade.
+As aplicações conhecem um único destino, o Collector. É ele que decide para onde vai cada sinal, então trocar de APM é uma mudança de configuração, e não de código.
+
+### A cadeia de resposta a incidentes
+
+```mermaid
+flowchart LR
+    PROM[(Prometheus<br/>regras de alerta)] --> AM[Alertmanager]
+
+    AM -->|Nível 2 · crítico| DG[Discord<br/>canal geral]
+    AM -->|Nível 2 · crítico| SH[Responder de<br/>self-healing]
+    SH -->|rollout restart<br/>via API do Kubernetes| DEP[Deployment afetado]
+
+    AM -->|Nível 1 · emergência<br/>só se a automação falhou| PD[PagerDuty<br/>incidente]
+    AM -->|Nível 1 · emergência| DE[Discord<br/>canal de emergência]
+```
+
+O desenho segue a linha do tempo ensinada nas aulas de Automação de Incidentes: primeiro a automação tenta resolver, e o plantonista só é acionado se ela não for suficiente.
 
 ---
 
 ## 🧩 Os 5 Microsserviços
 
-| Serviço | Linguagem | Porta | Responsabilidade | Persistência |
-|---|---|---|---|---|
-| **auth-service** | Go | 8001 | Emite e valida chaves de API (a "portaria") | RDS PostgreSQL |
-| **flag-service** | Python | 8002 | CRUD das definições de feature flags | RDS PostgreSQL |
-| **targeting-service** | Python | 8003 | Regras de segmentação (para quem a flag vale) | RDS PostgreSQL |
-| **evaluation-service** | Go | 8004 | *Hot path*: decisão final `true/false` e produz evento | ElastiCache Redis + SQS |
-| **analytics-service** | Python | 8005 | Consome eventos da fila e grava estatísticas | DynamoDB (via SQS) |
+| Serviço | Linguagem | Responsabilidade | Instrumentação |
+|---|---|---|---|
+| **auth-service** | Go | Emite e valida chaves de API | SDK OTel, `otelhttp` no servidor |
+| **flag-service** | Python | CRUD das feature flags | auto-instrumentação (Flask, psycopg2) |
+| **targeting-service** | Python | Regras de segmentação | auto-instrumentação (Flask, psycopg2) |
+| **evaluation-service** | Go | Decisão final `true/false`, produz evento | SDK OTel com propagação de contexto em todas as chamadas |
+| **analytics-service** | Python | Consome eventos da SQS e grava no DynamoDB | auto-instrumentação (boto3, threading) |
 
 ---
 
-## 🟣 Requisito 1 — Infraestrutura como Código (Terraform)
+## 🟠 Requisito 1 · Stack de Monitoramento Open Source
 
-Toda a infraestrutura da Fase 2, antes criada à mão, foi reescrita como Terraform, organizado por domínio em [infra/](infra/) e apoiado em **módulos oficiais da comunidade** para as peças mais complexas (VPC e EKS).
+Toda a stack entra no cluster como **Applications do ArgoCD**, declaradas em [gitops/apps/](gitops/apps/), pelo mesmo fluxo GitOps dos microsserviços.
 
-### O que foi provisionado
-
-| Item exigido | Implementação | Arquivo |
+| Componente | Implementação | Onde |
 |---|---|---|
-| **Networking** (VPC, subnets pública/privada, IGW, route tables) | Módulo `terraform-aws-modules/vpc`, VPC `10.0.0.0/16`, 2 AZs, subnets públicas e privadas com as tags que o EKS exige, IGW e NAT Gateway (único, por economia) | [infra/main.tf](infra/main.tf) |
-| **Cluster EKS + Node Groups** | Módulo `terraform-aws-modules/eks` v21, Kubernetes 1.34, nós em **subnet privada**, addons `vpc-cni`/`kube-proxy`/`coredns`, OIDC habilitado | [infra/eks.tf](infra/eks.tf) |
-| **3 RDS PostgreSQL** | `for_each` sobre `auth`/`flag`/`targeting`, criptografia em repouso com **KMS**, senha no **Secrets Manager**, sem acesso público, SG liberado só aos nós | [infra/rds.tf](infra/rds.tf) |
-| **1 ElastiCache (Redis)** | Replication group, criptografia em repouso, subnet privada, SG referenciando os nós | [infra/elasticache.tf](infra/elasticache.tf) |
-| **1 Tabela DynamoDB** | `ToggleMasterAnalytics`, on-demand (`PAY_PER_REQUEST`), chave `event_id`, point-in-time recovery | [infra/dynamodb.tf](infra/dynamodb.tf) |
-| **1 Fila SQS** | `togglemaster-analytics-events` com criptografia (SSE) e **Dead-Letter Queue** (`maxReceiveCount = 5`) | [infra/dynamodb.tf](infra/dynamodb.tf) |
-| **5 repositórios ECR** | `for_each` sobre os 5 serviços, tags **imutáveis** e scan on push | [infra/ecr.tf](infra/ecr.tf) |
-| **Estado remoto no S3 + lock** | Backend S3 (`fase3/terraform.tfstate`), `encrypt = true` e `use_lockfile = true` | [infra/backend.tf](infra/backend.tf) |
-| **Identidade dos pods (IRSA)** | Roles de IAM de menor privilégio, ServiceAccounts anotadas, sem chave estática | [infra/irsa.tf](infra/irsa.tf) |
-| **Federação OIDC do CI** | Provider OIDC + role assumida pelo GitHub Actions, restrita ao repositório e à branch `main` | [infra/github-oidc.tf](infra/github-oidc.tf) |
+| **Prometheus, Alertmanager e Grafana** | chart `kube-prometheus-stack` 91.4.1, com retenção de 5 dias | [kube-prometheus-stack.yaml](gitops/apps/kube-prometheus-stack.yaml) |
+| **Loki** | chart `loki` 7.3.0 em modo SingleBinary, armazenamento em filesystem | [loki.yaml](gitops/apps/loki.yaml) |
+| **Coleta de logs** | Grafana Alloy 1.12.1 como DaemonSet, lendo a saída de todos os pods | [alloy.yaml](gitops/apps/alloy.yaml) |
+| **Alvos de coleta** | ServiceMonitors do ingress-nginx e do OTel Collector | [gitops/base/observability/](gitops/base/observability/) |
+| **Dashboard customizado** | ConfigMap com o label `grafana_dashboard`, importado sozinho pelo sidecar do Grafana | [dashboard-togglemaster.yaml](gitops/base/observability/dashboard-togglemaster.yaml) |
+| **Fonte de logs no Grafana** | datasource do Loki com `uid` fixo, para o painel de logs referenciar sem ambiguidade | [kube-prometheus-stack.yaml](gitops/apps/kube-prometheus-stack.yaml) |
 
-### Decisões de arquitetura que valem destacar
+O dashboard tem sete painéis: uso de CPU e de memória do cluster, taxa de requisições por serviço, erros HTTP por serviço e por código, CPU e memória por pod do namespace da aplicação, e os logs em tempo real vindos do Loki. As métricas de requisição vêm da própria instrumentação OpenTelemetry das aplicações, e não da infraestrutura, então medem o que o usuário de fato experimenta.
 
-- **Lock de estado sem DynamoDB.** O backend usa a trava nativa do S3 (`use_lockfile`, Terraform 1.10+), dispensando a tabela DynamoDB que normalmente acompanha esse padrão. Menos um recurso para criar, pagar e manter, com a mesma segurança de concorrência.
-- **Nós em subnet privada.** Worker node com IP público é anti-padrão de segurança. Os nós ficam em subnet privada e saem para a internet apenas de saída via NAT Gateway; o control plane e os Load Balancers continuam públicos.
-- **Segurança por padrão na camada de dados.** Criptografia em repouso com chave KMS rotacionada, senhas geradas e guardadas pelo Secrets Manager (nenhuma senha em texto puro no código ou no state), e Security Group como *Policy Enforcement Point* (o banco só aceita conexão a partir do Security Group dos nós, não de um bloco de IP).
-- **Auditoria do próprio IaC.** O Terraform foi escaneado com o Trivy (`trivy config`) antes de aplicar. Achados de severidade alta foram corrigidos (ECR imutável, PITR no DynamoDB, IAM database authentication no RDS) e os demais foram aceitos com justificativa documentada.
+Algumas escolhas de configuração merecem registro. Os seletores padrão do chart só enxergam objetos que carreguem o label do próprio release, então `serviceMonitorSelectorNilUsesHelmValues`, `podMonitorSelectorNilUsesHelmValues` e `ruleSelectorNilUsesHelmValues` foram desligados para que ServiceMonitors e regras de alerta do projeto sejam descobertos. A senha de administrador do Grafana vem de um Secret fixo, porque o padrão do chart gera uma nova a cada sincronização do ArgoCD. E a coleta do scheduler e do controller-manager foi desligada, já que no EKS eles fazem parte do plano de controle gerenciado pela AWS e não expõem métricas ao cluster.
+
+<p align="center"><img src="assets/fase4/03-grafana-dashboard.png" width="900" alt="Dashboard customizado do ToggleMaster no Grafana com o sistema saudável"></p>
+
+<p align="center"><img src="assets/fase4/04-loki-logs.png" width="900" alt="Busca de logs no Loki filtrando o namespace da aplicação"></p>
 
 ---
 
-## 🟢 Requisito 2 — Pipeline de CI e DevSecOps
+## 🟡 Requisito 2 · OpenTelemetry Collector
 
-Cada um dos 5 microsserviços tem um workflow de CI no GitHub Actions que dispara **a cada push e a cada Pull Request na `main`** (com filtro de caminho, para que só o serviço alterado rode). Para evitar duplicação, a lógica vive em **dois workflows reutilizáveis** (um por linguagem) e cada serviço é um chamador enxuto.
+O Collector é a peça central da arquitetura, instalado pelo chart `opentelemetry-collector` 0.173.1 com a imagem *contrib* ([otel-collector.yaml](gitops/apps/otel-collector.yaml)).
 
-- Templates: [reusable-go-ci.yml](.github/workflows/reusable-go-ci.yml) e [reusable-python-ci.yml](.github/workflows/reusable-python-ci.yml)
-- Chamadores: [auth-service.yml](.github/workflows/auth-service.yml), [flag-service.yml](.github/workflows/flag-service.yml), [targeting-service.yml](.github/workflows/targeting-service.yml), [evaluation-service.yml](.github/workflows/evaluation-service.yml), [analytics-service.yml](.github/workflows/analytics-service.yml)
-
-### Os estágios do pipeline
-
-| Estágio exigido | Implementação |
+| Etapa | Configuração |
 |---|---|
-| **Build & Unit Test** | `go build` + `go test` (Go); `pytest` com um PostgreSQL efêmero como *service container* para os apps Flask (Python) |
-| **Lint / Static Analysis** | `go vet` + `gofmt` (Go); `flake8` no subconjunto de erros reais (Python) |
-| **SCA (dependências)** | **Trivy** em modo `fs` sobre `go.sum`/`requirements.txt`, bloqueando em CRÍTICO |
-| **SAST (código-fonte)** | **gosec** (Go) e **bandit** (Python) |
-| **Regra de bloqueio** | Todos os scans usam `exit-code: 1` em severidade **CRÍTICA**: o pipeline falha e **não prossegue** |
-| **Docker Build** | Build da imagem multi-stage |
-| **Container Scan** | **Trivy** em modo `image` sobre a imagem construída, antes do push (`ignore-unfixed` para bloquear só o crítico corrigível) |
-| **Login + Push no ECR** | Autenticação via **OIDC** (sem chave estática) e push com a tag igual ao **hash do commit** (`${{ github.sha }}`) |
-| **Extra: SBOM** | Geração do SBOM (CycloneDX) como artefato do build |
+| **Receivers** | `otlp`, em gRPC (`:4317`) e HTTP (`:4318`) |
+| **Processors** | `memory_limiter` (protege o Collector sob carga) e `batch` |
+| **Exporters** | `prometheus` (expõe em `:8889`, coletado por ServiceMonitor), `otlp/newrelic` (envia em gRPC ao endpoint OTLP do New Relic) e `debug` |
+| **Pipeline de métricas** | `otlp` → `memory_limiter`, `batch` → `prometheus` e `otlp/newrelic` |
+| **Pipeline de traces** | `otlp` → `memory_limiter`, `batch` → `otlp/newrelic` e `debug` |
+| **Pipeline de logs** | `otlp` → `memory_limiter`, `batch` → `debug` (reservado; os logs seguem pelo Alloy, como explicado abaixo) |
 
-### Autenticação sem chave estática (OIDC)
+A chave do New Relic chega ao Collector por variável de ambiente lida de um Secret (`newrelic-license`), e nunca aparece no repositório.
 
-O estágio de push não guarda `AWS_ACCESS_KEY_ID` em secret nenhum. O GitHub emite um token OIDC assinado, a AWS o valida contra a trust policy (que confere repositório e branch), e o STS devolve credencial temporária. É o mesmo princípio do IRSA do Requisito 1, agora aplicado ao CI, mantendo a política de "nenhuma credencial de longa duração".
+**Por que os logs seguem por outro caminho.** O Grafana Alloy também é uma distribuição do OpenTelemetry Collector, mas roda como DaemonSet e lê a saída padrão de todos os containers, inclusive dos componentes de terceiros que não foram instrumentados. Para não duplicar logs, as aplicações rodam com `OTEL_LOGS_EXPORTER=none`, e o Alloy é a única origem dos logs no Loki, já com os rótulos de namespace, pod, container e app aplicados na coleta.
 
-### A regra de bloqueio provada duas vezes
-
-1. **Teste adversarial deliberado.** Uma dependência com CVE crítica conhecida (`PyYAML 5.3.1`, CVE-2020-14343) foi injetada num Pull Request. O gate `security` detectou o crítico, **falhou com exit code 1** e deixou o merge bloqueado, provando o fluxo de PR-gate sem que a vulnerabilidade tocasse a `main`.
-2. **Um caso real, no calor da entrega.** Durante a Fase 3, o Trivy bloqueou a `CVE-2026-56854` (crítica, bypass de autenticação SSH) em `golang.org/x/crypto`, uma dependência **transitiva** do auth-service. A correção exigiu atualizar a biblioteca e o toolchain para Go 1.25. O gate barrou uma ameaça real que ninguém escolheu, exatamente o objetivo do shift-left.
+As aplicações são apontadas para o Collector por variáveis de ambiente nos Deployments ([exemplo](gitops/base/evaluation-service/deployment.yaml)): `OTEL_SERVICE_NAME`, `OTEL_EXPORTER_OTLP_ENDPOINT`, `OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf` e `OTEL_RESOURCE_ATTRIBUTES=service.namespace=togglemaster`.
 
 ---
 
-## 🟠 Requisito 3 — Entrega Contínua e GitOps
+## 🟢 Requisito 3 · Instrumentação e APM (New Relic)
 
-O deploy abandonou o push direto. Os manifestos vivem em [gitops/](gitops/), o ArgoCD é instalado por Terraform, o CI escreve a nova tag no Git, e o ArgoCD reconcilia o cluster automaticamente.
+### Serviços em Python
 
-### Estrutura do repositório de GitOps
+Os três serviços Python usam a **instrumentação automática**: o `opentelemetry-distro` 0.66b0 e o exportador OTLP 1.45.0 entram no [requirements.txt](services/flag-service/requirements.txt), o [Dockerfile](services/flag-service/Dockerfile) roda `opentelemetry-bootstrap -a install` para baixar os instrumentadores das bibliotecas presentes, e a aplicação passa a subir com `opentelemetry-instrument gunicorn`. Flask, requests, psycopg2 e, no analytics, boto3 e threading ficam instrumentados sem mudança no código da aplicação.
 
-O diretório usa **Kustomize** (nativo no `kubectl`):
+### Serviços em Go
 
-```
-gitops/
-  base/                          <- manifestos por serviço (Deployment, Service, ConfigMap, HPA/KEDA)
-    auth-service/ ... analytics-service/ ingress/
-  apps/                          <- as Applications do ArgoCD (uma por serviço + ingress)
-```
+Os dois serviços Go usam o **SDK** (`otel` v1.46.0 e `otelhttp` v0.71.0). Cada um ganhou um [tracing.go](services/evaluation-service/tracing.go) que configura o TracerProvider e o MeterProvider com exportação OTLP, lendo a configuração das variáveis de ambiente, e registra os propagadores W3C TraceContext e Baggage. O roteador HTTP é envolvido por `otelhttp.NewHandler`.
 
-| Item exigido | Implementação | Onde |
+O ponto que mais exigiu atenção foi o **evaluation-service**, que chama os outros três serviços. Para o trace atravessar essas chamadas, o contexto da requisição precisou ser propagado por toda a cadeia de funções, com `http.NewRequestWithContext` nas chamadas de saída e um cliente HTTP com `otelhttp.NewTransport`, que injeta o cabeçalho `traceparent`. Sem essa refatoração, cada serviço aparecia como um trace isolado de um único span, e o Service Map não se formava.
+
+### O resultado no New Relic
+
+O New Relic recebe OTLP nativamente, então não há agente proprietário em nenhum serviço. Os cinco aparecem como entidades OpenTelemetry, o Service Map é desenhado a partir dos traces reais, e uma única chamada ao endpoint de avaliação gera um **trace de nove spans atravessando quatro serviços**: o evaluation consulta o flag e o targeting, e cada um deles valida a chave no auth.
+
+<p align="center"><img src="assets/fase4/05-newrelic-servicos.png" width="900" alt="Os cinco serviços como entidades OpenTelemetry no New Relic"></p>
+
+<p align="center"><img src="assets/fase4/06-newrelic-service-map.png" width="900" alt="Service Map do evaluation-service no New Relic"></p>
+
+<p align="center"><img src="assets/fase4/08-newrelic-trace.png" width="900" alt="Trace distribuído com nove spans e quatro entidades, sem erros"></p>
+
+---
+
+## 🔴 Requisito 4 · Alertas, Incidente, ChatOps e Self-Healing
+
+### Alertas por nível de severidade
+
+As regras vivem numa PrometheusRule versionada ([prometheusrule-togglemaster.yaml](gitops/base/observability/prometheusrule-togglemaster.yaml)). A taxonomia segue a aula de Monitoramento Ativo e Alert Fatigue: nem todo alerta deve acordar uma pessoa.
+
+| Nível | Severidade | Destino |
 |---|---|---|
-| **Manifestos versionados** | Bases Kustomize dos 5 serviços + ingress | [gitops/base/](gitops/base/) |
-| **Instalação do ArgoCD** | `helm_release` no Terraform (chart `argo-cd`) | [infra/argocd.tf](infra/argocd.tf) |
-| **Controllers de plataforma** | `helm_release` do nginx-ingress, metrics-server e KEDA (com IRSA para o operador) | [infra/addons.tf](infra/addons.tf) |
-| **Atualização automática da tag** | Job `update-manifest` no CI: `kustomize edit set image ...:<commit-sha>` e commit de volta no Git | nos reusable workflows |
-| **Sync automático** | `syncPolicy.automated` (com `prune` e `selfHeal`) nas Applications | [gitops/apps/](gitops/apps/) |
-| **ArgoCD gerenciando os serviços** | 6 Applications (5 microsserviços + ingress) `Synced` e `Healthy` no cluster | validado (evidência no vídeo) |
+| N4 · Informativo | `info` | descartado (vai para dashboard, não para alerta) |
+| N3 · Aviso | `warning` | Discord, canal geral |
+| N2 · Crítico | `critical` | Discord, canal geral, e o responder de self-healing |
+| N1 · Emergência | `emergency` | PagerDuty e Discord, canal de emergência |
 
-### O loop fechado, provado no cluster
+Cada incidente tem **um par de regras** com a mesma condição e janelas diferentes. A primeira dispara cedo no Nível 2 e aciona a automação; a segunda só dispara se o problema persistir, e escala para o Nível 1. É assim que o escalonamento acontece porque a automação falhou, e não em paralelo a ela.
 
-Um push num serviço gera a imagem no ECR com a tag do commit; o job `update-manifest` reescreve essa tag no `gitops/`; o ArgoCD detecta o diff e sincroniza. Na validação, o `evaluation-service` subiu rodando a imagem cujo hash era exatamente o do commit de correção do dia, com o log do pod confirmando o serviço no ar. As seis Applications ficaram `Synced` e `Healthy`.
+| Regra | Condição | Janela | Nível |
+|---|---|---|---|
+| `ToggleMasterServiceDown` | o deployment deveria ter réplicas e nenhuma está disponível | 2 min | N2 |
+| `ToggleMasterServiceDownSustained` | a mesma | 7 min | N1 |
+| `ToggleMasterHighErrorRate` | mais de 5% de respostas 5xx | 5 min | N2 |
+| `ToggleMasterHighErrorRateSustained` | a mesma | 20 min | N1 |
 
-### Detalhes que mostram domínio
+A regra de indisponibilidade compara réplicas disponíveis com réplicas desejadas. Por isso ela não dispara para Jobs concluídos nem para o analytics-service, que o KEDA mantém em zero réplicas de propósito quando a fila está vazia.
 
-- **A fronteira Terraform ↔ ArgoCD.** O Terraform é dono da base (cluster, rede, dados, IRSA, namespace, ArgoCD e controllers); o ArgoCD é dono das aplicações. Sem sobreposição de donos.
-- **Bootstrap sem armadilha de CRD.** As Applications entram por um `kubectl apply -f gitops/apps/` único, porque aplicá-las via Terraform exigiria o CRD do ArgoCD já existente em tempo de `plan` (problema clássico de ovo e galinha).
-- **GitOps convivendo com autoscaler.** O KEDA (analytics) e o HPA (evaluation) alteram o número de réplicas, o que o ArgoCD leria como *drift*. A solução foi declarar `ignoreDifferences` em `/spec/replicas` nessas Applications: quem manda nas réplicas é o autoscaler, não o Git.
-- **Segredos fora do Git.** Os Secrets (senhas de banco, chaves) não são versionados; são injetados fora do fluxo GitOps, com as senhas vindas do Secrets Manager. O repositório declara a forma, não os segredos.
+### Roteamento e inibição no Alertmanager
+
+O roteamento está em [kube-prometheus-stack.yaml](gitops/apps/kube-prometheus-stack.yaml). As credenciais do PagerDuty e dos dois webhooks do Discord são lidas de arquivos montados a partir de um Secret (`alertmanager-integrations`), pelos campos `service_key_file` e `webhook_url_file`, então nenhuma delas entra no Git.
+
+Duas regras de inibição evitam ruído. Quando o Nível 1 de um incidente dispara, ele silencia o Nível 2 do mesmo incidente. E enquanto um serviço estiver fora do ar, os alertas de taxa de erro do mesmo nível ficam suprimidos: se o flag-service cai, o evaluation-service passa a devolver 502 por depender dele, e sem essa inibição o responder reiniciaria um serviço saudável. Para cobrir o tempo que a janela de cinco minutos da taxa de erro leva para esvaziar depois da recuperação, o alerta de indisponibilidade continua ativo por mais seis minutos (`keep_firing_for`).
+
+### Incidente e ChatOps
+
+O **PagerDuty** recebe os alertas de Nível 1 pela Events API e abre o incidente com urgência alta; quando o alerta para de disparar, o Alertmanager envia a resolução e o incidente fecha sozinho. O **Discord** tem dois canais, um geral e um de emergência, porque a aula de Notificação e Interação recomenda segmentar canais por severidade. As mensagens já trazem o serviço afetado, o impacto, a próxima ação e o link do runbook, para que ninguém precise montar o contexto do zero.
+
+### Self-healing
+
+A automação é um **responder que roda dentro do cluster** ([self-healing-responder.yaml](gitops/base/observability/self-healing-responder.yaml) e [self-healing-code.yaml](gitops/base/observability/self-healing-code.yaml)). Ele recebe o webhook do Alertmanager e percorre quatro etapas, cada uma registrada em log estruturado:
+
+1. **recebido:** identifica o deployment afetado pelo label `deployment` do alerta.
+2. **validação:** confirma que o deployment existe, que tem réplicas desejadas e que não houve outra ação nos últimos 30 minutos.
+3. **ação executada:** faz o rollout restart, o mesmo que o `kubectl rollout restart`, pela API do Kubernetes.
+4. **verificação:** lê o estado das réplicas logo depois da ação.
+
+O responder usa uma ServiceAccount com uma Role restrita ao namespace da aplicação e aos verbos `get`, `list` e `patch` em deployments. O código está versionado no Git como ConfigMap, o que dá auditoria de qualquer mudança na automação. O intervalo de espera de 30 minutos impede que uma ação ineficaz vire um loop de reinícios: se o restart não resolver, o caso segue para o plantonista. E os [runbooks](runbooks/), linkados em cada alerta, descrevem o que fazer em cada camada da resposta.
+
+O enunciado sugere, como exemplo, um GitHub Action acionado por webhook. A escolha por um responder no próprio cluster tem quatro razões: menos saltos entre o alerta e a ação, nenhuma dependência externa justamente durante um incidente, autorização pelo RBAC nativo do Kubernetes com menor privilégio, e nenhuma credencial estática fora do cluster.
+
+### A prova real
+
+O incidente demonstrado no vídeo remove o Secret com as credenciais do banco do flag-service e apaga os pods em execução, o que equivale a cortar o serviço do seu banco. A sequência observada:
+
+| Momento | O que aconteceu |
+|---|---|
+| T+0 | o pod recriado fica preso em `CreateContainerConfigError` |
+| ~T+3 min | `ToggleMasterServiceDown` em Firing; mensagem de Nível 2 no Discord |
+| no mesmo segundo | o responder valida e executa o restart, criando um ReplicaSet novo |
+| logo depois | o pod criado pela automação falha pelo mesmo motivo, porque a causa é de configuração |
+| ~T+8 min | escala para o Nível 1: incidente aberto no PagerDuty e aviso no canal de emergência |
+| após restaurar | resolução automática no Discord e incidente fechado sozinho no PagerDuty, com duração de 5 minutos |
+
+<p align="center"><img src="assets/fase4/11-grafana-alerta-firing.png" width="900" alt="Regra ToggleMasterServiceDown em Firing no Grafana Alerting"></p>
+
+<p align="center"><img src="assets/fase4/12-discord-nivel2.png" width="700" alt="Notificação de Nível 2 no canal geral do Discord"></p>
+
+<p align="center"><img src="assets/fase4/13-self-healing-responder.png" width="900" alt="Logs do responder com as quatro etapas da ação de self-healing"></p>
+
+<p align="center"><img src="assets/fase4/14-pod-recriado-pela-automacao.png" width="800" alt="Terminal mostrando o pod criado pela automação também falhando"></p>
+
+<p align="center"><img src="assets/fase4/16-grafana-incidente.png" width="900" alt="Dashboard durante o incidente, com os erros 502 do evaluation-service"></p>
+
+<p align="center"><img src="assets/fase4/17-pagerduty-incidente.png" width="900" alt="Incidente de Nível 1 aberto no PagerDuty"></p>
+
+<p align="center"><img src="assets/fase4/18-discord-nivel1.png" width="700" alt="Aviso de Nível 1 no canal de emergência do Discord"></p>
+
+<p align="center"><img src="assets/fase4/20-pagerduty-resolvido.png" width="700" alt="Incidente resolvido automaticamente no PagerDuty"></p>
 
 ---
 
-## 🔒 Segurança e Modelagem de Ameaças
+## 🧭 Justificativa Técnica das Escolhas
 
-A segurança é transversal ao projeto, não um estágio isolado:
+**Arquitetura do OpenTelemetry.** Um único Collector central recebe todos os sinais em OTLP e os roteia por pipeline. Isso desacopla as aplicações das ferramentas de destino, permite processar a telemetria num só lugar (limite de memória e agrupamento em lote) e evita que cada serviço precise conhecer o New Relic ou o Prometheus. Os logs são a exceção deliberada: o Alloy, que é uma distribuição do mesmo Collector, os coleta da saída dos containers, cobrindo também os componentes que não foram instrumentados.
 
-- **Nenhuma credencial de longa duração.** OIDC no CI e IRSA nos pods; as credenciais são sempre temporárias.
-- **Menor privilégio real.** Cada role de IAM concede só o que o componente usa (o CI só faz push no ECR; o `evaluation` só `SendMessage` na SQS; o `analytics` só consome a fila e grava no DynamoDB; o KEDA só lê a profundidade da fila).
-- **Defesa em profundidade no pipeline.** SAST (código), SCA (dependências) e scan de imagem (SO da imagem base) cobrem fonte e artefato final, com bloqueio em severidade crítica.
-- **Isolamento de rede.** Bancos e cache sem exposição pública, em subnets privadas, com Security Group como ponto de imposição de política.
-- **Criptografia.** Em repouso no RDS (KMS), na SQS (SSE) e na ElastiCache.
+**New Relic no lugar do Datadog.** O plano gratuito do New Relic inclui APM, tracing distribuído e Service Map sem limite de tempo, e ele recebe OTLP nativamente, sem agente proprietário. No Datadog, o APM só está disponível no período de teste. Como a instrumentação é toda OpenTelemetry, a escolha do APM fica isolada na configuração do Collector.
 
-Foi feita também uma **modelagem de ameaças** com duas lentes complementares, **STRIDE** (design) e **MITRE ATT&CK** (táticas reais de adversário), mapeando cada técnica de ataque relevante à mitigação já existente na arquitetura. As decisões de risco (por exemplo, vulnerabilidades altas aceitas conscientemente em dependências legadas) foram documentadas no espírito do padrão **VEX**, que declara a explorabilidade de cada vulnerabilidade no contexto real do sistema.
+**PagerDuty no lugar do OpsGenie.** A aula de MTTR com OpsGenie compara as duas ferramentas e posiciona o PagerDuty para quem precisa de orquestração de resposta, automação de runbooks e remediação automática, que é exatamente o caso deste projeto. Além disso, o OpsGenie está em processo de descontinuação pela Atlassian.
+
+**Discord no ChatOps.** Tem integração nativa no Alertmanager por webhook, sem instalar aplicativo, e permite separar um canal por nível de severidade.
 
 ---
 
 ## ✅ Rastreabilidade dos Requisitos
 
-Mapa direto de cada exigência do enunciado para a evidência no repositório.
+### Código-fonte no repositório
 
-### Requisito 1 — IaC
+| Exigência | Onde está |
+|---|---|
+| IaC/GitOps atualizado com a stack de monitoramento | [gitops/apps/](gitops/apps/) (`kube-prometheus-stack`, `loki`, `alloy`, `observability-base`) e [gitops/base/observability/](gitops/base/observability/) |
+| IaC/GitOps atualizado com o OTel Collector | [gitops/apps/otel-collector.yaml](gitops/apps/otel-collector.yaml) |
+| Aplicações instrumentadas | `tracing.go` em [auth-service](services/auth-service/tracing.go) e [evaluation-service](services/evaluation-service/tracing.go); `requirements.txt` e `Dockerfile` dos três serviços Python |
+| Automações de self-healing | [self-healing-responder.yaml](gitops/base/observability/self-healing-responder.yaml), [self-healing-code.yaml](gitops/base/observability/self-healing-code.yaml) e os [runbooks](runbooks/) |
 
-| # | Exigência | Onde está |
-|---|---|---|
-| 1.1 | VPC, subnets pública/privada, IGW, route tables | [infra/main.tf](infra/main.tf) |
-| 1.2 | Cluster EKS + Node Groups | [infra/eks.tf](infra/eks.tf) |
-| 1.3a | 3 RDS PostgreSQL | [infra/rds.tf](infra/rds.tf) |
-| 1.3b | 1 ElastiCache Redis | [infra/elasticache.tf](infra/elasticache.tf) |
-| 1.3c | 1 Tabela DynamoDB (`ToggleMasterAnalytics`) | [infra/dynamodb.tf](infra/dynamodb.tf) |
-| 1.4 | 1 Fila SQS | [infra/dynamodb.tf](infra/dynamodb.tf) |
-| 1.5 | 5 repositórios ECR (via Terraform) | [infra/ecr.tf](infra/ecr.tf) |
-| 1.6 | Backend remoto no S3 (+ `use_lockfile`) | [infra/backend.tf](infra/backend.tf) |
-| 1.7 | Uso de módulos | módulos VPC e EKS em [infra/main.tf](infra/main.tf) e [infra/eks.tf](infra/eks.tf) |
+### Vídeo de demonstração
 
-### Requisito 2 — CI & DevSecOps
+| Exigência | Onde aparece |
+|---|---|
+| EKS e ArgoCD rodando com a nova stack | onze Applications `Synced` e `Healthy` |
+| Dashboard customizado no Grafana | painel saudável e o mesmo painel durante o incidente |
+| Busca de logs no Loki | consulta por namespace e consulta dos erros em cascata |
+| Explicação do roteamento do OTel Collector | cena de arquitetura |
+| Service Map no APM | New Relic, centrado no evaluation-service |
+| Requisição de teste e trace distribuído | nove spans, quatro serviços, sem erros |
+| Problema proposital no sistema | Secret do banco removido do flag-service |
+| Alerta em Firing no Grafana | `ToggleMasterServiceDown` em Firing |
+| Incidente no PagerDuty e notificação no Discord | Nível 1 aberto no PagerDuty; Níveis 2 e 1 nos dois canais |
+| Self-healing executando a ação corretiva | logs do responder e o pod recriado pela automação |
 
-| # | Exigência | Onde está |
-|---|---|---|
-| 2.1 | Workflow para cada um dos 5 serviços | [.github/workflows/](.github/workflows/) |
-| 2.2 | Dispara em Push e Pull Request na `main` | bloco `on:` de cada chamador |
-| 2.3 | Build & Unit Test | job `build-test` nos reusable |
-| 2.4 | Linter / Static Analysis | job `lint` (go vet/gofmt, flake8) |
-| 2.5 | SCA (Trivy fs) | job `security` |
-| 2.6 | SAST (gosec / bandit) | job `security` |
-| 2.7 | Bloqueio em vulnerabilidade CRÍTICA | `exit-code: 1` nos scans |
-| 2.8 | Docker Build + Container Scan (Trivy image) | job `build-push` |
-| 2.9 | Login no ECR + push com tag do commit hash | job `build-push` (OIDC, `${{ github.sha }}`) |
+### Relatório de entrega
 
-### Requisito 3 — CD & GitOps
-
-| # | Exigência | Onde está |
-|---|---|---|
-| 3.1 | Pasta com os manifestos das aplicações | [gitops/](gitops/) |
-| 3.2 | Instalação do ArgoCD | [infra/argocd.tf](infra/argocd.tf) |
-| 3.3 | Passo do CI que atualiza a tag no GitOps | job `update-manifest` nos reusable |
-| 3.4 | ArgoCD com sync automático dos serviços | [gitops/apps/](gitops/apps/) |
+| Exigência | Onde está |
+|---|---|
+| Print do dashboard do Grafana | [16-grafana-incidente.png](assets/fase4/16-grafana-incidente.png) |
+| Print de um trace distribuído no APM | [08-newrelic-trace.png](assets/fase4/08-newrelic-trace.png) |
+| Print da notificação no ChatOps | [12-discord-nivel2.png](assets/fase4/12-discord-nivel2.png) e [18-discord-nivel1.png](assets/fase4/18-discord-nivel1.png) |
+| Print da execução do self-healing | [13-self-healing-responder.png](assets/fase4/13-self-healing-responder.png) |
+| Justificativa técnica | seção [Justificativa Técnica das Escolhas](#-justificativa-técnica-das-escolhas) |
 
 ---
 
 ## 🚀 Como Reproduzir do Zero
 
-> Pré-requisitos: AWS CLI configurado (conta pessoal, Opção B), Terraform ≥ 1.10, `kubectl` e Docker.
+> Pré-requisitos: AWS CLI configurado (conta pessoal), Terraform 1.10 ou superior, `kubectl`, Python e Docker. Contas no New Relic, no PagerDuty (Service com integração Events API) e um servidor no Discord com dois webhooks de canal.
 
-### 1. Provisionar a infraestrutura
+### 1. Recursos persistentes (uma única vez)
+
+```bash
+terraform -chdir=infra/persistent init
+terraform -chdir=infra/persistent apply
+```
+
+Cria os repositórios ECR e a federação OIDC do GitHub Actions. Eles ficam em um stack separado para sobreviver aos ciclos de `destroy`: assim o CI continua funcionando com o cluster desligado e as imagens não precisam ser reconstruídas a cada subida.
+
+### 2. Infraestrutura do ambiente
 
 ```bash
 terraform -chdir=infra init
 terraform -chdir=infra apply
-aws eks update-kubeconfig --region us-east-1 --name togglemaster
 ```
 
-Isso cria a rede, o cluster EKS, os bancos, a fila, os ECR, o IRSA, e instala ArgoCD, nginx-ingress, metrics-server e KEDA.
+No primeiro `apply` de um cluster novo, os recursos que tocam o Kubernetes podem falhar com `namespaces is forbidden`, porque a entrada de acesso do EKS leva alguns segundos para propagar. Basta rodar o `apply` de novo.
 
-### 2. Injetar os segredos e a configuração de ambiente
-
-Os segredos ficam fora do Git. Aplique-os uma vez (as senhas do RDS vêm do Secrets Manager) e ajuste o endpoint do Redis no ConfigMap do `evaluation`, que muda a cada apply.
-
-### 3. Fazer o bootstrap do GitOps
+### 3. Segredos e bootstrap
 
 ```bash
-kubectl apply -f gitops/apps/
-kubectl get applications -n argocd
+cp scripts/secrets.env.example ~/.togglemaster-secrets.env   # preencha os valores
+bash scripts/bootstrap-cluster.sh
 ```
 
-O ArgoCD passa a reconciliar os 5 serviços e o ingress a partir do diretório `gitops/`. A partir daí, todo deploy é um commit no Git.
+O [script](scripts/bootstrap-cluster.sh) aponta o `kubectl` para o cluster, atualiza o endpoint do Redis no GitOps, busca as senhas do RDS no Secrets Manager, cria os sete Secrets (aplicação, New Relic, integrações do Alertmanager e Grafana) e aplica as Applications do ArgoCD. Os segredos ficam fora do repositório.
 
-### 4. Derrubar o ambiente (disciplina de custo)
+### 4. Ensaiar e provocar o incidente
+
+```bash
+bash scripts/ensaio-alertas.sh        # sem cluster: Alertmanager real em Docker, entrega de verdade no PagerDuty e no Discord
+bash scripts/simular-incidente.sh     # no cluster: derruba o flag-service e restaura ao final
+```
+
+### 5. Derrubar o ambiente
 
 ```bash
 terraform -chdir=infra destroy
+```
+
+Se o `destroy` parar no namespace da aplicação, é o finalizer do KEDA, que já foi desinstalado e não pode mais removê-lo:
+
+```bash
+for r in $(kubectl get scaledobject,triggerauthentication -n togglemaster -o name); do
+  kubectl patch $r -n togglemaster --type=merge -p '{"metadata":{"finalizers":null}}'
+done
 ```
 
 ---
 
 ## 🚧 Desafios e Decisões Técnicas
 
-- **Eliminação de drift para provar o IaC.** No caminho, o `apply` revelou recursos ainda criados manualmente na Fase 2 (fora do Terraform). Em vez de importar, eles foram apagados e recriados por código, tornando a afirmação "tudo sobe do zero por IaC" literalmente verdadeira.
-- **Diagnóstico sistemático do nó que não ficava `Ready`.** Duas causas diferentes (rede sem NAT e ausência do addon VPC CNI) davam a mesma mensagem genérica. Só provar cada elo da corrente com dados reais, em vez de chutar, separou os dois problemas.
-- **Pinning de versão como princípio de CI.** Depois de falhas seguidas com `@latest` e tags inexistentes, tudo passou a ser fixado: actions, gosec, Trivy, charts Helm. `@latest` é uma bomba-relógio em CI.
-- **A CVE crítica pega no ato.** O gate barrou uma vulnerabilidade crítica recém-divulgada numa dependência transitiva. Avaliei declarar a não-explorabilidade via VEX (o pacote vulnerável não é usado), mas optei pela remediação completa, com bump de toolchain para Go 1.25.
-- **O drift GitOps × autoscaler.** Resolvido com `ignoreDifferences` no campo de réplicas, reconhecendo que nem todo campo tem o Git como fonte da verdade.
-- **Teardown do EKS travando no namespace.** O `destroy` prendia na exclusão do namespace por causa de APIServices órfãos (metrics-server/KEDA) e do finalizer do ScaledObject. A limpeza desses recursos destravou a remoção, sem deixar nada pago para trás.
+Toda a configuração foi validada antes de subir o cluster, com o `promtool` (regras), o `amtool` (roteamento do Alertmanager, inclusive testando caminho a caminho) e o `helm template` (o que cada chart realmente gera). Ainda assim, o ambiente real revelou problemas que nenhuma validação estática pegaria. Os principais:
+
+- **A causa real dos 502 apareceu no Loki.** O painel de logs mostrou `relation "api_keys" does not exist`: o schema dos bancos nunca era carregado. A solução foram Jobs de migração como hooks `PreSync` do ArgoCD, que rodam antes de cada sincronização. Foi a observabilidade pagando a si mesma na primeira semana.
+- **Regras que o Prometheus não enxergava.** O seletor padrão do chart só descobre regras com o label do próprio release. Dezenove grupos de regras estavam carregados, e nenhum era do projeto.
+- **Um alerta medindo o sintoma errado.** A primeira versão contava containers não prontos em todos os pods, e os Jobs de migração concluídos disparavam um falso alerta de indisponibilidade. A versão final compara réplicas disponíveis com desejadas.
+- **O ensaio que não derrubava nada.** Remover o Secret e reiniciar o deployment não tirava o serviço do ar: o pod antigo já tinha as credenciais carregadas, e com uma réplica o rolling update se recusa a derrubá-lo antes de o novo ficar pronto. O alerta estava certo em não disparar; o ensaio passou a apagar os pods.
+- **O responder mirando o alvo errado.** Os alertas baseados no kube-state-metrics carregam o nome do pod do próprio exportador, e o responder o usava antes do label `deployment`. A validação recusou a ação, como devia, e a ordem de precedência foi corrigida.
+- **Duas convenções de métrica convivendo.** A instrumentação Python emite `http_server_duration_milliseconds` e a Go emite `http_server_request_duration_seconds`, com nomes de label diferentes. Dashboard e alertas passaram a ler as duas.
+- **A inibição falhando na volta ao normal.** Mesmo com o alerta de indisponibilidade mantido ativo após a recuperação, o responder reiniciou o evaluation-service depois do incidente. Lendo o código-fonte do Alertmanager 0.34, a causa ficou clara: as origens de inibição são indexadas pelos labels de `equal`, uma por chave, sem procurar outra. Sem `equal`, os dois níveis disputavam a mesma vaga, e quando o Nível 1 se resolvia a vaga ficava apontando para um alerta encerrado. A correção (`equal: [nivel]`) foi comprovada com um teste reproduzível contra o Alertmanager do cluster, antes e depois.
+- **Ruído que nasce do próprio chart.** No EKS, `KubeSchedulerDown` e `KubeControllerManagerDown` disparavam o tempo todo, porque esses componentes são gerenciados pela AWS. Alerta que nunca pode ser resolvido é o exemplo clássico de alerta não acionável.
+- **Propagação de contexto em Go.** A instrumentação sozinha não produzia traces distribuídos; foi preciso propagar o contexto da requisição por toda a cadeia de chamadas do evaluation-service.
+- **Identidade e registro fora do ciclo descartável.** O OIDC do GitHub e os ECR eram destruídos junto com o cluster, e o CI falhava com uma mensagem enganosa sobre o token. Separar o que é plataforma do que é ambiente resolveu.
 
 ---
 
 ## 💰 Disciplina de Custo (FinOps)
 
-A infraestrutura cobrada por hora (EKS, RDS, ElastiCache, NAT, Load Balancer) é provisionada apenas para validação e demonstração, e **derrubada logo em seguida** com `terraform destroy`. O ciclo `apply` → validação → `destroy` reproduz o ambiente inteiro em minutos, sem deixar recursos ociosos na fatura.
+O projeto usa dois stacks de Terraform com ciclos de vida diferentes. O de [infra/](infra/) contém tudo o que é cobrado por hora (EKS, nós, RDS, ElastiCache, NAT Gateway e Load Balancer), sobe apenas para validar e gravar, e é derrubado com `terraform destroy` ao fim de cada sessão. O de [infra/persistent/](infra/persistent/) contém só os repositórios ECR e a federação OIDC, que custam centavos por mês e permanecem de pé até o fim do projeto.
 
-O custo bruto do mês reflete apenas as poucas subidas do ambiente para validação e gravação. Como cada ciclo é curto e encerrado com `destroy`, o footprint completo fica na casa de poucos dólares por mês, e no período os créditos disponíveis cobrem o uso, deixando o custo líquido praticamente em zero.
-
-| Métrica (mês corrente) | Valor |
-| ---------------------- | ----- |
-| Custo no mês até a data (bruto) | **US$ 20,97** |
-| Previsão de fechamento do mês | **US$ 22,70** |
-| Mesmo período do mês anterior | US$ 0,82 |
-| Custo total do mês anterior | US$ 1,25 |
-
-O salto em relação ao mês anterior corresponde exatamente às subidas do cluster para testar a stack de ponta a ponta e gravar a demonstração. Fora desses momentos, o ambiente permanece destruído e a fatura ociosa é zero.
-
-![Resumo de custos da AWS mostrando o custo do mês até a data e a previsão de fechamento](assets/finops-cost-summary.png)
+A maior parte do trabalho da fase foi feita sem cluster: as configurações foram validadas com as próprias ferramentas do Prometheus e do Alertmanager, e a cadeia de alertas foi ensaiada inteira com o Alertmanager rodando em Docker, entregando de verdade no PagerDuty e no Discord. O cluster só subiu para provar o que dependia do ambiente real. Ao final de cada sessão, a conta foi verificada recurso a recurso para confirmar que nada cobrado por hora havia ficado ligado.
 
 ---
 
-## 📦 Entregáveis da Fase 3
+## 📦 Entregáveis da Fase 4
 
-- 🎥 **Vídeo de Demonstração** (até 20 min): **[assista aqui](https://youtu.be/FzPVnhvLdOI)**. Cobre o `terraform plan` sem drift, o pipeline DevSecOps falhando e depois passando, o CI atualizando a tag no GitOps, o ArgoCD sincronizando sozinho e o `terraform destroy` ao final.
-- 💻 **Código-fonte:** todo o Terraform ([infra/](infra/)), os workflows ([.github/workflows/](.github/workflows/)) e os manifestos GitOps ([gitops/](gitops/)) neste repositório.
-- 📄 **Relatório de Entrega:** este README, acompanhado do print de custo.
+- 🎥 **Vídeo de demonstração** (até 25 min): **[link a inserir]**
+- 💻 **Código-fonte:** a stack de observabilidade e o Collector ([gitops/](gitops/)), a instrumentação ([services/](services/)), as automações ([gitops/base/observability/](gitops/base/observability/), [scripts/](scripts/) e [runbooks/](runbooks/)).
+- 📄 **Relatório de entrega (PDF):** com as evidências visuais e a justificativa técnica.
 
 ---
 
 ## 🏷 Versionamento
 
 - `v1.0.0-fase1`: MVP monolítico (EC2 + RDS).
-- `v2.0.0-fase2`: microsserviços em Kubernetes/EKS (infra manual).
-- `v3.0.0-fase3`: IaC (Terraform), CI/CD DevSecOps e GitOps (ArgoCD).
+- `v2.0.0-fase2`: microsserviços em Kubernetes/EKS.
+- `v3.0.0-fase3`: IaC com Terraform, CI/CD DevSecOps e GitOps com ArgoCD.
+- `v4.0.0-fase4`: observabilidade com OpenTelemetry, APM, alertas, incidente e self-healing.
 
 ---
 
 ## 👤 Autor
 
-**Artur Duarte de Moraes** — RM 370569
+**Artur Duarte de Moraes** · RM 370569
 IT Operation Engineer no Banco Bradesco · Pós-graduando em DevOps & Cloud Architecture (FIAP)
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=flat-square&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/artur-duarte-5141aa212)
