@@ -419,7 +419,7 @@ A maior parte do trabalho da fase foi feita sem cluster: as configurações fora
 
 ## 📦 Entregáveis da Fase 4
 
-- 🎥 **Vídeo de demonstração** (até 25 min): **[link a inserir]**
+- 🎥 **Vídeo de demonstração** (até 25 min): **[youtu.be/hrQiqhkRcgA](https://youtu.be/hrQiqhkRcgA)**
 - 💻 **Código-fonte:** a stack de observabilidade e o Collector ([gitops/](gitops/)), a instrumentação ([services/](services/)), as automações ([gitops/base/observability/](gitops/base/observability/), [scripts/](scripts/) e [runbooks/](runbooks/)).
 - 📄 **Relatório de entrega (PDF):** com as evidências visuais e a justificativa técnica.
 
